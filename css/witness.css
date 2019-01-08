@@ -1,0 +1,7 @@
+@import url('https://fonts.googleapis.com/css?family=Merriweather');
+
+body {
+    font-family: 'Merriweather', serif;
+    font-variant: small-caps;
+    font-weight: bolder;
+}

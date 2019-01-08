@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/puzzle.css">
+</head>
+
+<body>
+    <!--[if lte IE 9]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+    <![endif]-->
+
+    <svg id="puzzle"></svg>
+
+    <script src="js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="js/vendor/pako-1.0.7.min.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/logging.js"></script>
+    <script src="js/base64.js"></script>
+    <script src="js/util.js"></script>
+
+    <script src="js/witness.js"></script>
+    <script src="js/witness/constants.js"></script>
+    <script src="js/witness/puzzle.js"></script>
+    <script src="js/witness/renderer.js"></script>
+
+    <script>
+        window.onload = function () {
+            let puzzle = new Puzzle(4, 4);
+            puzzle.setLineV(0, 0, { kind: 'gap', });
+            puzzle.setLineH(0, 0, { kind: 'gap', });
+            puzzle.setCell(1, 1, { kind: C.ObjKind.Square, color: 'blue' });
+            puzzle.setCell(1, 2, { kind: C.ObjKind.Star, color: 'red' });
+            puzzle.setCell(2, 2, { kind: C.ObjKind.Elimination, color: 'white' });
+            puzzle.setCell(1, 3, { kind: C.ObjKind.Triangle, color: 'orange', count: 1 });
+            puzzle.setCell(2, 3, { kind: C.ObjKind.Triangle, color: 'orange', count: 2 });
+            puzzle.setCell(3, 3, { kind: C.ObjKind.Triangle, color: 'orange', count: 3 });
+            puzzle.setLineV(1, 1, { kind: C.ObjKind.Hexagon, color: 'black' });
+            puzzle.setLineH(1, 1, { kind: C.ObjKind.Hexagon, color: 'black' });
+            puzzle.setNode(1, 1, { kind: C.ObjKind.Hexagon, color: 'black' });
+            puzzle = Puzzle.deserialize(puzzle.serialize());
+            W.renderer.draw(puzzle);
+        };
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,132 @@
+svg.puzzle {
+    margin: 10px;
+    stroke-width: 0;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -ms-user-select: none;
+}
+
+svg.puzzle .border {
+    stroke: none;
+    fill: #000;
+}
+
+svg.puzzle .background {
+    stroke: none;
+    fill: #0a8;
+}
+
+svg.puzzle .startpoint {
+    fill: #344;
+}
+
+svg.puzzle .line,
+svg.puzzle .endpoint {
+    stroke: #344;
+    stroke-width: 24px;
+    stroke-linecap: round;
+}
+
+svg.puzzle .button {
+    cursor: pointer;
+    opacity: 0.3;
+    transition-property: opacity;
+    transition-duration: 0.2s;
+}
+
+svg.puzzle .button:hover {
+    opacity: 1;
+    transition-property: opacity;
+    transition-duration: 0.4s;
+}
+
+svg.puzzle .editor-selector {
+    fill: #ff0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+svg.puzzle .play-selector {
+    display: none;
+}
+
+svg.play .play-selector {
+    opacity: 0;
+}
+
+:root {
+    --color-black: #000;
+    --color-white: #fff;
+    --color-red: #f00;
+    --color-orange: #f80;
+    --color-yellow: #ff0;
+    --color-green: #0d0;
+    --color-blue: #00f;
+    --color-purple: #70c;
+}
+
+.black {
+    stroke: var(--color-black);
+    fill: var(--color-black);
+}
+.black-elem {
+    background-color: var(--color-black);
+}
+
+.white {
+    stroke: var(--color-white);
+    fill: var(--color-white);
+}
+.white-elem {
+    background-color: var(--color-white);
+}
+
+.red {
+    stroke: var(--color-red);
+    fill: var(--color-red);
+}
+.red-elem {
+    background-color: var(--color-red);
+}
+
+.orange {
+    stroke: var(--color-orange);
+    fill: var(--color-orange);
+}
+.orange-elem {
+    background-color: var(--color-orange);
+}
+
+.yellow {
+    stroke: var(--color-yellow);
+    fill: var(--color-yellow);
+}
+.yellow-elem {
+    background-color: var(--color-yellow);
+}
+
+.green {
+    stroke: var(--color-green);
+    fill: var(--color-green);
+}
+.green-elem {
+    background-color: var(--color-green);
+}
+
+.blue {
+    stroke: var(--color-blue);
+    fill: var(--color-blue);
+}
+.blue-elem {
+    background-color: var(--color-blue);
+}
+
+.purple {
+    stroke: var(--color-purple);
+    fill: var(--color-purple);
+}
+.purple-elem {
+    background-color: var(--color-purple);
+}

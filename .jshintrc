@@ -1,0 +1,17 @@
+{
+    "esversion": 6,
+    "curly": true,
+    "eqeqeq": true,
+    "latedef": true,
+    "maxcomplexity": false,
+    "maxdepth": 4,
+    "strict": true,
+    "trailingcomma": true,
+    "unused": true,
+    "varstmt": true,
+    "eqnull": true,
+    "browser": true,
+    "devel": true,
+    "jquery": true,
+    "typed": true
+}

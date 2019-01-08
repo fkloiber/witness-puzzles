@@ -1,0 +1,72 @@
+#editor {
+    width: max-content;
+    margin: 0 auto;
+}
+
+#title {
+    text-align: center;
+    font-size: 80px;
+}
+
+#file-menu {
+    width: 100%;
+    text-align: center;
+}
+
+#tools-menu {
+    width: 186px;
+    margin: 10px 0;
+    padding: 5px;
+    float: left;
+    /*background: #eee;*/
+    box-sizing: border-box;
+}
+
+.btn {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    margin: 5px 3px;
+    cursor: pointer;
+    box-shadow: 0 2px 2px 1px #333;
+}
+
+.btn:hover {
+    box-shadow: 0 2px 5px 1px #000;
+}
+
+.btn.selected {
+    box-shadow: 0 3px 5px 3px #000;
+}
+/*
+.tool-btn.selected {
+    background-color: rgb(174, 60, 240);
+}
+*/
+.tool-btn svg {
+    width: 30px;
+    height: 30px;
+    margin: 10px;
+    pointer-events: none;
+}
+
+#puzzle-panel {
+    margin-left: 186px;
+}
+
+svg.puzzle .editor-selector {
+    opacity: 0;
+    fill: #ff0;
+    pointer-events: all;
+}
+
+svg.select-line .editor-selector.select-line:hover,
+svg.select-node .editor-selector.select-node:hover,
+svg.select-cell .editor-selector.select-cell:hover {
+    opacity: 0.3;
+}
+
+svg.edit .button {
+    display: none;
+}

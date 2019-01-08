@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/witness.css">
+    <link rel="stylesheet" href="css/puzzle.css">
+    <link rel="stylesheet" href="css/editor.css">
+</head>
+
+<body>
+    <!--[if lte IE 9]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+    <![endif]-->
+
+    <script src="js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="js/vendor/pako-1.0.7.min.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/logging.js"></script>
+    <script src="js/base64.js"></script>
+    <script src="js/util.js"></script>
+
+    <script src="js/witness.js"></script>
+    <script src="js/witness/constants.js"></script>
+    <script src="js/witness/puzzle.js"></script>
+    <script src="js/witness/editor.js"></script>
+    <script src="js/witness/renderer.js"></script>
+
+    <div id="editor">
+        <div id="title" contenteditable="true"></div>
+        <div id="file-menu"><button>New</button><button>Save</button><button>Play</button></div>
+        <div id="tools-menu">
+            <div id="tool-buttons">
+                <div id="hexagon" class="btn tool-btn"><svg viewBox="-10 -10 20 20">
+                        <use href="img/obj.svg#hexagon" transform="scale(0.6)"></use>
+                    </svg></div>
+                <div id="square" class="btn tool-btn"><svg viewBox="-10 -10 20 20">
+                        <use href="img/obj.svg#square" transform="scale(0.48)"></use>
+                    </svg></div>
+                <div id="star" class="btn tool-btn"><svg viewBox="-10 -10 20 20">
+                        <use href="img/obj.svg#star" transform="scale(0.5)"></use>
+                    </svg></div>
+                <div id="elimination" class="btn tool-btn"><svg viewBox="-10 -10 20 20">
+                        <use href="img/obj.svg#elimination" transform="translate(0,1) scale(0.5)"></use>
+                    </svg></div>
+                <div id="triangle" class="btn tool-btn"><svg viewBox="-10 -10 20 20">
+                        <use href="img/obj.svg#triangle-1" transform="translate(0,-1) scale(0.5)"></use>
+                    </svg></div>
+            </div>
+            <hr>
+            <div id="color-buttons">
+                <div class="btn color-btn black-elem"></div>
+                <div class="btn color-btn white-elem"></div>
+                <div class="btn color-btn red-elem"></div>
+                <div class="btn color-btn orange-elem"></div>
+                <div class="btn color-btn yellow-elem"></div>
+                <div class="btn color-btn green-elem"></div>
+                <div class="btn color-btn blue-elem"></div>
+                <div class="btn color-btn purple-elem"></div>
+            </div>
+        </div>
+        <div id="puzzle-panel"><svg id="puzzle"></svg></div>
+        <div id="color-menu"></div>
+    </div>
+
+    <script>
+        window.onload = function () {
+            let puzzle = new Puzzle(4, 4);
+            W.renderer.draw(puzzle);
+            W.editor.edit(puzzle);
+        };
+    </script>
+</body>
+
+</html>

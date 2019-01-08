@@ -1,0 +1,37 @@
+<svg id="objects" width="0" height="0" xmlns="http://www.w3.org/2000/svg">
+    <g id="hexagon">
+        <polygon points="10 0,5 8.66,-5 8.66,-10 0,-5 -8.66,5 -8.66"></polygon>
+    </g>
+    <g id="square">
+        <rect x="-18" y="-18" width="36" height="36" rx="12" ry="12"></rect>
+    </g>
+    <g id="star">
+        <polygon points="20 0,12 5,14.1 14.1,5 12,0 20,-5 12,-14.1 14.1,-12 5,-20 0,-12 -5,-14.1 -14.1,-5 -12,0 -20,5 -12,14.1 -14.1,12 -5"></polygon>
+    </g>
+    <g id="elimination">
+        <polygon points="3 -13,-3 -13,-4 -2.31,-12.76 3.9,-9.76 9.1,0 4.62,9.76 9.1,12.76 3.9,4 -2.31"></polygon>
+    </g>
+    <g id="triangle-1">
+        <polygon points="9 10.392,0 -5.196,-9 10.392"></polygon>
+    </g>
+    <g id="triangle-2">
+        <use href="#triangle-1" x="-10"></use>
+        <use href="#triangle-1" x="10"></use>
+    </g>
+    <g id="triangle-3">
+        <use href="#triangle-1" x="-20"></use>
+        <use href="#triangle-1" x="0"></use>
+        <use href="#triangle-1" x="20"></use>
+    </g>
+    <g id="button-play">
+        <title>Play</title>
+        <rect x="-20" y="-20" width="40" height="40" rx="10" ry="10" fill="black"></rect>
+        <path d="M10 0L-8.5 10.8v-21.6z" fill="white"></path>
+    </g>
+    <g id="button-edit">
+        <title>Edit</title>
+        <rect x="-20" y="-20" width="40" height="40" rx="10" ry="10" fill="black"></rect>
+        <path d="M-10.5 -14.5h21v29h-21zM-6 -6.5h12M-6 0.5h12M-6 7.5h12" stroke="white" stroke-width="1" stroke-linecap="round"></path>
+        <path d="M-10.5 -14.5h6v14l-3 4l-3 -4z" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="black" transform="translate(10,5) rotate(30)"></path>
+    </g>
+</svg>
