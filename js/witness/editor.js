@@ -101,8 +101,12 @@ W.editor = (function() {
     }
 
     function handleColorButton(/** @type {MouseEvent} */ e) {
+        if (!e.target.classList.contains('btn')) {
+            return;
+        }
         let newColor = getColorNameFromClassList(e.target.classList);
         if (newColor == null) {
+            L.error(`Clicked color button, but couldn't detect color (${e.target.className})`);
             return;
         }
         U.RemoveClassFromChildren(toolButtons, currentColor);
