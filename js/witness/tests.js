@@ -15,6 +15,8 @@ W.tests = (function() {
             '{"width":1,"height":1,"data":[{},{},{},{},{},{},{},{},{}],"startPoints":[{"x":0,"y":1}],"endPoints":[{"x":1,"y":0,"dir":"S"}]}'),
         Puzzle.fromJSON(
             '{"width":3,"height":2,"data":[{"kind":"hexagon","color":"red"},{"kind":"hexagon","color":"green"},{},{},{},{},{},{"kind":"hexagon","color":"blue"},{"kind":"square","color":"black"},{},{"kind":"star","color":"white"},{},{"kind":"elimination","color":"yellow"},{},{},{},{},{},{},{},{},{},{"kind":"triangle","color":"orange","count":1},{},{"kind":"triangle","color":"orange","count":2},{},{"kind":"triangle","color":"purple","count":3},{},{},{},{},{},{},{},{}],"startPoints":[{"x":0,"y":4}],"endPoints":[{"x":6,"y":0,"dir":"NE"}]}'),
+        Puzzle.fromJSON(
+            '{"width":2,"height":2,"data":[{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],"topology":"pillar","startPoints":[{"x":0,"y":4}],"endPoints":[{"x":0,"y":0,"dir":"N"}]}'),
     ];
 
     return {

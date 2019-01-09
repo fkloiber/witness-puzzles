@@ -74,6 +74,12 @@ W.renderer = (function() {
         return ref;
     }
 
+    function createLocalReferenceInto(parent, _class, id, transform) {
+        let ref = createInto(parent, 'use', _class);
+        ref.setAttributeNS(null, 'href', '#' + id);
+        ref.setAttributeNS(null, 'transform', transform);
+    }
+
     let clipPathCounter = 0;
     function createLineGapClipPath(defs, x, y, isVertical) {
         let clipPath = createInto(defs, 'clipPath');
@@ -148,6 +154,14 @@ W.renderer = (function() {
             puzzleHeight - 2 * C.Dim.FieldBorder);
         bg.setAttributeNS(null, 'rx', 5);
         bg.setAttributeNS(null, 'ry', 5);
+    }
+
+    function drawPillarBackground(puzzle, layer) {
+        let puzzleWidth  = getDimensionFromGridSize(puzzle.cellWidth);
+        let puzzleHeight = getDimensionFromGridSize(puzzle.cellHeight);
+        createRectInto(layer, 'border', 0, 0, puzzleWidth, puzzleHeight);
+        let bg = createRectInto(
+            layer, 'background', 0, C.Dim.FieldBorder, puzzleWidth, puzzleHeight - 2 * C.Dim.FieldBorder);
     }
 
     function drawLinesInternal(puzzle, layer, defs /*, options = {}*/) {
@@ -236,6 +250,85 @@ W.renderer = (function() {
         }
     }
 
+    let refIdNr = 0;
+    function getReferenceId() {
+        return 'ref-' + refIdNr++;
+    }
+
+    function createStop(gradient, offset, opacity) {
+        let stop = createInto(gradient, 'stop');
+        stop.setAttributeNS(null, 'offset', offset);
+        stop.setAttributeNS(null, 'stop-color', 'white');
+        stop.setAttributeNS(null, 'stop-opacity', opacity);
+    }
+
+    function createMaskGradient(defs, puzzle) {
+        let id       = getReferenceId();
+        let gradient = createElement('linearGradient');
+        gradient.id  = id;
+
+        let totalWidth   = getDimensionFromGridSize(puzzle.cellWidth);
+        let runningWidth = C.Dim.FieldBorder + C.Dim.FieldPadding - C.Dim.LineWidth / 2;
+        ;
+
+        createStop(gradient, 0, 0);
+        createStop(gradient, runningWidth / totalWidth, 1);
+        runningWidth += C.Dim.CellWidth * puzzle.cellWidth + C.Dim.LineWidth;
+        createStop(gradient, runningWidth / totalWidth, 1);
+        createStop(gradient, 1, 0);
+
+        defs.appendChild(gradient);
+        return id;
+    }
+
+    function createMask(defs, gradientId, puzzle) {
+        let id   = getReferenceId();
+        let mask = createInto(defs, 'mask');
+        mask.id  = id;
+
+        let width  = getDimensionFromGridSize(puzzle.cellWidth);
+        let height = getDimensionFromGridSize(puzzle.cellHeight);
+        let rect   = createRectInto(mask, null, 0, 0, width, height);
+        rect.setAttributeNS(null, 'fill', `url(#${gradientId})`);
+
+        return id;
+    }
+
+    function restructureForPillarRendering(svg, puzzle) {
+        // move the layers containing the puzzle objects into a wrapper
+        // in the defs instead of having them naked in the svg
+        let defs = svg.querySelector('defs');
+
+        let refWrapper = createGroupInto(defs, 'refwrapper');
+        let wrapperId  = getReferenceId();
+        refWrapper.id  = wrapperId;
+
+        let ref = createGroupInto(refWrapper, 'ref');
+        let id  = getReferenceId();
+        ref.id  = id;
+
+        ref.appendChild(svg.querySelector('.layer-lines'));
+        ref.appendChild(svg.querySelector('.layer-endpoints'));
+        ref.appendChild(svg.querySelector('.layer-objects'));
+        ref.appendChild(svg.querySelector('.layer-selectors'));
+
+        // repeat the reference left and right
+        let deltaX = puzzle.cellWidth * C.Dim.CellWidth;
+
+        createLocalReferenceInto(refWrapper, 'ref', id, `translate(${- deltaX},0)`);
+        createLocalReferenceInto(refWrapper, 'ref', id, `translate(${deltaX},0)`);
+
+        let useWrapper = createGroupInto(svg, 'usewrapper');
+        createLocalReferenceInto(useWrapper, 'ref', wrapperId, `translate(0,0)`);
+
+        // create a mask to blend the repeating .............................................
+        let gradientId = createMaskGradient(defs, puzzle);
+        let maskId     = createMask(defs, gradientId, puzzle);
+
+        // apply mask
+        useWrapper.setAttributeNS(null, 'mask', `url(#${maskId})`);
+    }
+
     return {
         draw: function(puzzle, target = 'puzzle' /*, options = {}*/) {
             let svg = getSvgElement(target);
@@ -268,6 +361,12 @@ W.renderer = (function() {
 
             // drawButtons(buttons, puzzleWidth);
             drawLineSelectors(puzzle, selectors);
+
+            if (puzzle.topology === C.Topology.Pillar) {
+                restructureForPillarRendering(svg, puzzle);
+                clearElement(background);
+                drawPillarBackground(puzzle, background);
+            }
 
             L.timeEnd('info', 'rendering');
             L.groupEnd();
