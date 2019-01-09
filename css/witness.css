@@ -1,3 +1,18 @@
+:root {
+    /* colors */
+    --color-black: #000;
+    --color-white: #fff;
+    --color-red: #f00;
+    --color-orange: #f80;
+    --color-yellow: #ff0;
+    --color-green: #0d0;
+    --color-blue: #00f;
+    --color-purple: #70c;
+
+    --bg-color: #0a8;
+    --line-color: #344;
+}
+
 @import url('https://fonts.googleapis.com/css?family=Merriweather');
 
 body {

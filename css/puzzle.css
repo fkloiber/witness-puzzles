@@ -15,16 +15,16 @@ svg.puzzle .border {
 
 svg.puzzle .background {
     stroke: none;
-    fill: #0a8;
+    fill: var(--bg-color);
 }
 
 svg.puzzle .startpoint {
-    fill: #344;
+    fill: var(--line-color);
 }
 
 svg.puzzle .line,
 svg.puzzle .endpoint {
-    stroke: #344;
+    stroke: var(--line-color);
     stroke-width: 24px;
     stroke-linecap: round;
 }
@@ -53,17 +53,6 @@ svg.puzzle .play-selector {
 
 svg.play .play-selector {
     opacity: 0;
-}
-
-:root {
-    --color-black: #000;
-    --color-white: #fff;
-    --color-red: #f00;
-    --color-orange: #f80;
-    --color-yellow: #ff0;
-    --color-green: #0d0;
-    --color-blue: #00f;
-    --color-purple: #70c;
 }
 
 .black {
