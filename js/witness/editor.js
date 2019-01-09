@@ -240,7 +240,10 @@ W.editor = (function() {
             setupTitleEventHandlers();
             setupClickHandlers();
             handleToolButton({
-                target: toolsMenu.querySelector('.tool-btn'),
+                target: toolsButtons.querySelector('.btn'),
+            });
+            handleColorButton({
+                target: colorButtons.querySelector('.btn'),
             });
         },
     };
