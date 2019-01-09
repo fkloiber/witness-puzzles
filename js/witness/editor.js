@@ -97,7 +97,7 @@ W.editor = (function() {
         changeSelectionMode(newSelectionMode);
     }
 
-    function handleColorButtons(/** @type {MouseEvent} */ e) {
+    function handleColorButton(/** @type {MouseEvent} */ e) {
         let newColor = getColorNameFromClassList(e.target.classList);
         if (newColor == null) {
             return;
@@ -216,7 +216,7 @@ W.editor = (function() {
         for (let i = 0; i < toolButtons.length; ++i) {
             toolButtons[i].onclick = handleToolButton;
         }
-        colorButtons.addEventListener('click', handleColorButtons);
+        colorButtons.addEventListener('click', handleColorButton);
     }
 
     function setTitle(newTitle) {
@@ -240,7 +240,7 @@ W.editor = (function() {
             setupTitleEventHandlers();
             setupClickHandlers();
             handleToolButton({
-                target: toolsButtons.querySelector('.btn'),
+                target: toolButtons.querySelector('.btn'),
             });
             handleColorButton({
                 target: colorButtons.querySelector('.btn'),
