@@ -35,7 +35,7 @@
 
     <script>
         window.onload = function () {
-            let puzzle = new Puzzle(4, 4);
+            let puzzle = new Puzzle(4, 4, '', { topology: C.Topology.Pillar });
             puzzle.setLineV(0, 0, { kind: 'gap', });
             puzzle.setLineH(0, 0, { kind: 'gap', });
             puzzle.setCell(1, 1, { kind: C.ObjKind.Square, color: 'blue' });

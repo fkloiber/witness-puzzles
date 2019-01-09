@@ -36,6 +36,10 @@ window.C = (function() {
             GridX: 'grid-x',
             GridY: 'grid-y',
         },
+        Topology: {
+            Plane: 'plane',
+            Pillar: 'pillar',
+        },
         Dim: {
             FieldBorder: 10,
             FieldPadding: 50,
@@ -58,5 +62,6 @@ window.C = (function() {
             SE: -315,
         },
         TrianglesMaxCount: 3,
+        NewPuzzleName: 'Unnamed Puzzle',
     };
 })();

@@ -1,7 +1,14 @@
 window.Puzzle = (function() {
     'use strict';
+
+    let defaultSymmetry = {
+        horizontal: false,
+        vertical: false,
+        pillar: false,
+    };
+
     let Puzzle = class Puzzle {
-        constructor(cellW, cellH, name = 'Unnamed Puzzle') {
+        constructor(cellW, cellH, name = C.NewPuzzleName, options = {}) {
             this.width      = cellW * 2 + 1;
             this.height     = cellH * 2 + 1;
             this.cellWidth  = cellW;
@@ -9,8 +16,15 @@ window.Puzzle = (function() {
             this.lineWidth  = cellW + 1;
             this.lineHeight = cellH + 1;
 
-            this.options = {};
-            this.name    = name;
+            this.name = name;
+
+            this.symmetry = options.symmetry || defaultSymmetry;
+            this.topology = options.topology || C.Topology.Plane;
+
+            if (this.topology === C.Topology.Pillar) {
+                this.width -= 1;
+                this.lineWidth -= 1;
+            }
 
             this.data = [];
             for (let i = 0; i < this.width * this.height; ++i) {
@@ -31,16 +45,20 @@ window.Puzzle = (function() {
             ];
         }
 
-        serialize() {
-            let data = JSON.stringify({
+        toJSON() {
+            return {
                 width: this.cellWidth,
                 height: this.cellHeight,
-                options: this.options,
                 name: this.name,
+                symmetry: this.symmetry,
+                topology: this.topology,
                 data: this.data,
                 startPoints: this.startPoints,
                 endPoints: this.endPoints,
-            });
+            };
+        }
+        serialize() {
+            let data = JSON.stringify(this.toJSON());
 
             data = pako.gzip(data, {
                 level: 9,
@@ -49,6 +67,18 @@ window.Puzzle = (function() {
             return base64.encodeUint8Array(data);
         }
 
+        static fromJSON(data) {
+            let puzzle = new Puzzle(data.width, data.height, data.name || C.NewPuzzleName, {
+                symmetry: data.symmetry || defaultSymmetry,
+                topology: data.topology || C.Topology.Plane,
+            });
+
+            puzzle.data        = data.data;
+            puzzle.startPoints = data.startPoints;
+            puzzle.endPoints   = data.endPoints;
+
+            return puzzle;
+        }
         static deserialize(data) {
             data = base64.decodeToUint8Array(data);
             data = pako.ungzip(data, {
@@ -56,15 +86,7 @@ window.Puzzle = (function() {
             });
             data = JSON.parse(data);
 
-            let puzzle = new Puzzle(data.width, data.height);
-
-            puzzle.options     = data.options;
-            puzzle.data        = data.data;
-            puzzle.name        = data.name;
-            puzzle.startPoints = data.startPoints;
-            puzzle.endPoints   = data.endPoints;
-
-            return puzzle;
+            return Puzzle.fromJSON(data);
         }
 
         get(idx) {
