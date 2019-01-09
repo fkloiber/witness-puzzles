@@ -49,6 +49,8 @@
     height: 30px;
     margin: 10px;
     pointer-events: none;
+    stroke: #000;
+    stroke-width: 1px;
 }
 
 #puzzle-panel {
