@@ -15,9 +15,8 @@ W.renderer = (function() {
     }
 
     function getDimensionFromGridSize(size) {
-        let numCells  = (size - 1) / 2;
         let dimension = 2 * (C.Dim.FieldBorder + C.Dim.FieldPadding);
-        dimension += numCells * C.Dim.CellWidth;
+        dimension += size * C.Dim.CellWidth;
         return dimension;
     }
 
@@ -142,12 +141,12 @@ W.renderer = (function() {
 
     function drawBackground(puzzle, layer) {
         L.time('log', 'drawBackground');
-        let puzzleWidth  = getDimensionFromGridSize(puzzle.width);
-        let puzzleHeight = getDimensionFromGridSize(puzzle.height);
+        let puzzleWidth  = getDimensionFromGridSize(puzzle.cellWidth);
+        let puzzleHeight = getDimensionFromGridSize(puzzle.cellHeight);
         createRectInto(layer, 'border', 0, 0, puzzleWidth, puzzleHeight);
         let bg = createRectInto(
             layer, 'background', C.Dim.FieldBorder, C.Dim.FieldBorder, puzzleWidth - 2 * C.Dim.FieldBorder,
-            puzzleWidth - 2 * C.Dim.FieldBorder);
+            puzzleHeight - 2 * C.Dim.FieldBorder);
         bg.setAttributeNS(null, 'rx', 5);
         bg.setAttributeNS(null, 'ry', 5);
         L.timeEnd('log', 'drawBackground');
@@ -254,8 +253,8 @@ W.renderer = (function() {
             clearElement(svg);
             svg.classList.add('puzzle');
 
-            let puzzleWidth  = getDimensionFromGridSize(puzzle.width);
-            let puzzleHeight = getDimensionFromGridSize(puzzle.height);
+            let puzzleWidth  = getDimensionFromGridSize(puzzle.cellWidth);
+            let puzzleHeight = getDimensionFromGridSize(puzzle.cellHeight);
             svg.setAttributeNS(null, 'width', puzzleWidth);
             svg.setAttributeNS(null, 'height', puzzleHeight);
 
