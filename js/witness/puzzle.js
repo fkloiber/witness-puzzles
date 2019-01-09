@@ -68,6 +68,9 @@ window.Puzzle = (function() {
         }
 
         static fromJSON(data) {
+            if (typeof data === 'string') {
+                data = JSON.parse(data);
+            }
             let puzzle = new Puzzle(data.width, data.height, data.name || C.NewPuzzleName, {
                 symmetry: data.symmetry || defaultSymmetry,
                 topology: data.topology || C.Topology.Plane,
@@ -84,7 +87,6 @@ window.Puzzle = (function() {
             data = pako.ungzip(data, {
                 to: 'string',
             });
-            data = JSON.parse(data);
 
             return Puzzle.fromJSON(data);
         }
