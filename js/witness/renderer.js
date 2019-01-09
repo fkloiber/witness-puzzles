@@ -207,12 +207,14 @@ W.renderer = (function() {
         L.timeEnd('log', 'drawObjectsInternal');
     }
 
+    /*
     function drawButtons(layer, width) {
         let transform = `translate(${width - 40},40)`;
         createReferenceInto(layer, 'button', 'button-edit', transform);
         transform = `translate(${width - 90},40)`;
         createReferenceInto(layer, 'button', 'button-play', transform);
     }
+    //*/
 
     function drawLineSelectors(puzzle, layer) {
         for (let y = 0; y < puzzle.height; ++y) {
@@ -265,14 +267,14 @@ W.renderer = (function() {
             let endpoints  = createGroupInto(svg, 'layer-endpoints');
             let objects    = createGroupInto(svg, 'layer-objects');
             let selectors  = createGroupInto(svg, 'layer-selectors');
-            let buttons    = createGroupInto(svg, 'layer-buttons');
+            // let buttons    = createGroupInto(svg, 'layer-buttons');
 
             drawBackground(puzzle, background);
             drawLinesInternal(puzzle, lines, defs);
             drawEndpointsInternal(puzzle, endpoints, selectors);
             drawObjectsInternal(puzzle, objects);
 
-            drawButtons(buttons, puzzleWidth);
+            // drawButtons(buttons, puzzleWidth);
             drawLineSelectors(puzzle, selectors);
 
             L.timeEnd('info', 'rendering');
