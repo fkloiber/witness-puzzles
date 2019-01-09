@@ -140,7 +140,6 @@ W.renderer = (function() {
     }
 
     function drawBackground(puzzle, layer) {
-        L.time('log', 'drawBackground');
         let puzzleWidth  = getDimensionFromGridSize(puzzle.cellWidth);
         let puzzleHeight = getDimensionFromGridSize(puzzle.cellHeight);
         createRectInto(layer, 'border', 0, 0, puzzleWidth, puzzleHeight);
@@ -149,14 +148,11 @@ W.renderer = (function() {
             puzzleHeight - 2 * C.Dim.FieldBorder);
         bg.setAttributeNS(null, 'rx', 5);
         bg.setAttributeNS(null, 'ry', 5);
-        L.timeEnd('log', 'drawBackground');
     }
 
     function drawLinesInternal(puzzle, layer, defs /*, options = {}*/) {
-        L.time('log', 'drawLinesInternal');
         drawLines(layer, puzzle, defs, puzzle.lineWidth, puzzle.cellHeight, 0, C.Dim.CellWidth);
         drawLines(layer, puzzle, defs, puzzle.cellWidth, puzzle.lineHeight, C.Dim.CellWidth, 0);
-        L.timeEnd('log', 'drawLinesInternal');
     }
 
     function drawStartpointSelectors(puzzle, layer) {
@@ -173,7 +169,6 @@ W.renderer = (function() {
     }
 
     function drawEndpointsInternal(puzzle, layer, selectorLayer) {
-        L.time('log', 'drawEndpointsInternal');
         let sp = puzzle.startPoints;
         for (let i = 0; i < sp.length; ++i) {
             let xPos   = C.Dim.FieldBorder + C.Dim.FieldPadding + C.Dim.CellWidth * sp[i].x / 2;
@@ -191,11 +186,9 @@ W.renderer = (function() {
             let angle = C.Direction[ep[i].dir];
             line.setAttributeNS(null, 'transform', `translate(${xPos},${yPos}) rotate(${angle})`);
         }
-        L.timeEnd('log', 'drawEndpointsInternal');
     }
 
     function drawObjectsInternal(puzzle, layer) {
-        L.time('log', 'drawObjectsInternal');
         for (let y = 0; y < puzzle.height; ++y) {
             for (let x = 0; x < puzzle.width; ++x) {
                 let object = puzzle.getGrid(x, y);
@@ -204,7 +197,6 @@ W.renderer = (function() {
                 }
             }
         }
-        L.timeEnd('log', 'drawObjectsInternal');
     }
 
     /*
