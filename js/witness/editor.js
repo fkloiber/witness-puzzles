@@ -68,6 +68,9 @@ W.editor = (function() {
     }
 
     function handleToolButton(e) {
+        if (!e.target.classList.contains('btn')) {
+            return;
+        }
         currentTool = e.target.id;
         U.RemoveClassFromChildren(toolButtons, 'selected');
         e.target.classList.add('selected');
@@ -211,11 +214,7 @@ W.editor = (function() {
 
     function setupClickHandlers() {
         panel.addEventListener('click', handleSelectorClick);
-
-        let toolButtons = document.querySelectorAll('.tool-btn');
-        for (let i = 0; i < toolButtons.length; ++i) {
-            toolButtons[i].onclick = handleToolButton;
-        }
+        toolButtons.addEventListener('click', handleToolButton);
         colorButtons.addEventListener('click', handleColorButton);
     }
 
