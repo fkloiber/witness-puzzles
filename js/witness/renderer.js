@@ -160,8 +160,7 @@ W.renderer = (function() {
         let puzzleWidth  = getDimensionFromGridSize(puzzle.cellWidth);
         let puzzleHeight = getDimensionFromGridSize(puzzle.cellHeight);
         createRectInto(layer, 'border', 0, 0, puzzleWidth, puzzleHeight);
-        let bg = createRectInto(
-            layer, 'background', 0, C.Dim.FieldBorder, puzzleWidth, puzzleHeight - 2 * C.Dim.FieldBorder);
+        createRectInto(layer, 'background', 0, C.Dim.FieldBorder, puzzleWidth, puzzleHeight - 2 * C.Dim.FieldBorder);
     }
 
     function drawLinesInternal(puzzle, layer, defs /*, options = {}*/) {
@@ -269,7 +268,6 @@ W.renderer = (function() {
 
         let totalWidth   = getDimensionFromGridSize(puzzle.cellWidth);
         let runningWidth = C.Dim.FieldBorder + C.Dim.FieldPadding - C.Dim.LineWidth / 2;
-        ;
 
         createStop(gradient, 0, 0);
         createStop(gradient, runningWidth / totalWidth, 1);
