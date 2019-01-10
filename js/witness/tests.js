@@ -19,6 +19,14 @@ W.tests = (function() {
             '{"width":2,"height":2,"data":[{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],"topology":"pillar","startPoints":[{"x":0,"y":4}],"endPoints":[{"x":0,"y":0,"dir":"N"}]}'),
     ];
 
+    tests.push(Puzzle.deserialize(
+        'H4sIAAAAAAACA81UwWrDMAz9laGzD8kIrPi+ey9jh9GDFnuxqWOnjrq2Cfn32Wk2VkZYlr' +
+        'QwMNhP6D3rIaEWDlqQAv7AQEldKOqfFksJHJ5sfIi79b5pjAQG9aksJfkT8BaU87pxltAA' +
+        'f0NTSwbv0pPOvwUqbQz6AXYMyFXOuCLwoTJoo6RAQuAvbccmHdhqKwJdySMWzgaBPCiGL+' +
+        'DVYL6FH4n1bo9ejuSNJh2UJgm/FbFQe7KX6efPhpZZmV3ndYzMbN/Nil3eyFlK12nPf5jG' +
+        'W43bYm/LxnFkNc2rZjp7ExY2oae105bquGThCDxhEPZvmkWpALMzTAaY3vd4NcBVj7IoJa' +
+        '24FErP1KAndPz+EQZSchl//owPhHh9MTbdB1HCuKaDBgAA'));
+
     return {
         run: function() {
             let container = document.getElementById('tests');
