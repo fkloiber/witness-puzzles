@@ -22,6 +22,10 @@
     box-sizing: border-box;
 }
 
+#puzzle-panel {
+    margin-left: 186px;
+}
+
 .btn {
     display: inline-block;
     width: 50px;
@@ -39,11 +43,7 @@
 .btn.selected {
     box-shadow: 0 3px 5px 3px #000;
 }
-/*
-.tool-btn.selected {
-    background-color: rgb(174, 60, 240);
-}
-*/
+
 .tool-btn svg {
     width: 30px;
     height: 30px;
@@ -53,22 +53,18 @@
     stroke-width: 1px;
 }
 
-#puzzle-panel {
-    margin-left: 186px;
-}
-
-svg.puzzle .editor-selector {
+svg.puzzle.edit .editor-selector {
     opacity: 0;
     fill: #ff0;
-    pointer-events: all;
+    display: initial;
 }
 
-svg.select-line .editor-selector.select-line:hover,
-svg.select-node .editor-selector.select-node:hover,
-svg.select-cell .editor-selector.select-cell:hover {
+svg.puzzle.edit.select-line .editor-selector.select-line:hover,
+svg.puzzle.edit.select-node .editor-selector.select-node:hover,
+svg.puzzle.edit.select-cell .editor-selector.select-cell:hover {
     opacity: 0.3;
 }
 
-svg.edit .button {
+svg.puzzle.edit .button {
     display: none;
 }

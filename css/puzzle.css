@@ -43,16 +43,16 @@ svg.puzzle .button:hover {
 }
 
 svg.puzzle .editor-selector {
-    opacity: 0;
-    pointer-events: none;
+    display: none;
 }
 
 svg.puzzle .play-selector {
     display: none;
 }
 
-svg.play .play-selector {
+svg.puzzle.play .play-selector {
     opacity: 0;
+    display: initial;
 }
 
 .black {
