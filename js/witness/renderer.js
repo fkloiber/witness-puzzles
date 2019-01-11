@@ -331,6 +331,8 @@ W.renderer = (function() {
         draw: function(puzzle, target = 'puzzle' /*, options = {}*/) {
             let svg = getSvgElement(target);
 
+            data.put(svg, 'puzzle', puzzle);
+
             L.groupCollapsed('info', `Rendering "${puzzle.name}" into element "${svg.id}"`);
             L.info('Rendering', puzzle, 'into', svg);
             L.time('info', 'rendering');
