@@ -311,7 +311,7 @@ W.renderer = (function() {
         ref.appendChild(svg.querySelector('.layer-objects'));
         ref.appendChild(svg.querySelector('.layer-selectors'));
 
-        // repeat the reference left and right
+        // repeat the reference in left and right tiles
         let deltaX = puzzle.cellWidth * C.Dim.CellWidth;
 
         createLocalReferenceInto(refWrapper, 'ref', id, `translate(${- deltaX},0)`);
@@ -320,7 +320,7 @@ W.renderer = (function() {
         let useWrapper  = createGroupInto(svg, 'usewrapper');
         let moveWrapper = createLocalReferenceInto(useWrapper, 'ref', wrapperId, `translate(0,0)`);
 
-        // create a mask to blend the repeating .............................................
+        // create a mask to blend the repeating pillar tiles onto the static background
         let gradientId = createMaskGradient(defs, puzzle);
         let maskId     = createMask(defs, gradientId, puzzle);
 
