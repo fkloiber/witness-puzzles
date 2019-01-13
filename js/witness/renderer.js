@@ -354,12 +354,12 @@ W.renderer = (function() {
             }
             moveWrapper.setAttributeNS(null, 'transform', `translate(${currentTransformX})`);
         }
-        svg.addEventListener('gotpointercapture', function(e) {
+        svg.addEventListener('gotpointercapture', function() {
             svg.classList.add('dragging');
             svg.addEventListener('pointermove', pointermoveHandler);
             document.documentElement.addEventListener('contextmenu', preventEventAction);
         });
-        svg.addEventListener('lostpointercapture', function(e) {
+        svg.addEventListener('lostpointercapture', function() {
             svg.classList.remove('dragging');
             svg.removeEventListener('pointermove', pointermoveHandler);
             window.setTimeout(function() {
