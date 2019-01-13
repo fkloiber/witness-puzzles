@@ -24,6 +24,23 @@ window.U = (function() {
         },
     };
 
+    function toHex(i) {
+        return ('0000000' + i.toString(16)).substr(-8);
+    }
+
+    function getUUID() {
+        let data = new Uint32Array(4);
+        crypto.getRandomValues(data);
+        data[1] &= 0xffff0fff;
+        data[1] |= 0x00004000;
+        data[2] &= 0x3fffffff;
+        data[2] |= 0x80000000;
+        let result = toHex(data[0]) + '-' + toHex(data[1]) + '-' + toHex(data[2]) + toHex(data[3]);
+
+        result = result.substr(0, 13) + '-' + result.substr(13, 9) + '-' + result.substr(22);
+        return result;
+    }
+
     return {
         SetPrefixUniqueClass: function(/** @type {HTMLElement} */ elem, /** @type {string} */ _class) {
             let prefix = _class.slice(0, _class.indexOf('-') + 1);
@@ -47,5 +64,6 @@ window.U = (function() {
                 elem.classList.remove(_class);
             }
         },
+        GetUUID: getUUID,
     };
 })();
