@@ -27,6 +27,13 @@ W.tests = (function() {
         'W43bYm/LxnFkNc2rZjp7ExY2oae105bquGThCDxhEPZvmkWpALMzTAaY3vd4NcBVj7IoJa' +
         '24FErP1KAndPz+EQZSchl//owPhHh9MTbdB1HCuKaDBgAA'));
 
+    tests.push(Puzzle.deserialize(
+        'H4sIAAAAAAACA61TywrCMBD8lznvoR70kLt4E8GjeIhNaINpounWB6X/blpRFBRbKiwhy8' +
+        '7OTpZJjbNRnEPMCLk2Wc4QU4KThYbA3KlFvK2MtTKAUF6LQnO4QtQ46cAmlRaCQ6UJhzuo' +
+        'yxoC+4O3PovQR4WgJEuITd3QgMDeOBVZSu440sgap8AH6TKN8fie04+VDPqF75wb/kX3tX' +
+        'lnZbofrGV89BI0WHWvHY1a5J9jS507eOWN47J1JC4QCSG6dZK0Yi/dh4hp0oK1U5+g8VSm' +
+        'fcISbz2TZ2GNZtvcAMb+aZpjAwAA'));
+
     return {
         run: function() {
             let container = document.getElementById('tests');
