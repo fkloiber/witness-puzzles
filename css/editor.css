@@ -10,7 +10,11 @@
 
 #file-menu {
     width: 100%;
-    text-align: center;
+    /*text-align: center;*/
+}
+
+#file-menu-advanced {
+    height: fit-content;
 }
 
 #tools-menu {
@@ -51,6 +55,32 @@
     pointer-events: none;
     stroke: #000;
     stroke-width: 1px;
+}
+
+label.disabled {
+    color: #888;
+}
+
+.reveal-toggle {
+    cursor: pointer;
+}
+
+svg.symbol {
+    display: inline;
+}
+
+.reveal-toggle {
+    display: none;
+}
+
+.reveal-toggle.visible {
+    display: inherit;
+}
+
+.toggleable {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s;
 }
 
 svg.puzzle.edit .editor-selector {

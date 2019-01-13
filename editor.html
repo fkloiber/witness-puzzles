@@ -35,8 +35,39 @@
 
     <div id="editor">
         <div id="title" contenteditable="true"></div>
-        <div id="file-menu"><button>New</button><button>Save</button><button>Play</button></div>
         <div id="tools-menu">
+            <div id="file-menu">
+                <b>Size:</b><br>
+                <input id="puzzle-width" class="dim-input" type="number" min="1" max="10"></input> x <input id="puzzle-height"
+                    class="dim-input" type="number" min="1" max="10"></input>
+                <button>New</button>
+                <button>Save</button>
+                <button>Save copy</button>
+                <button>Play</button>
+                <button>Apply</button>
+                <div>
+                    <span class="reveal-toggle visible">More <svg class="symbol" viewBox="-7 -7 14 14" width="14"
+                            height="14">
+                            <use href="img/obj.svg#reveal-down"></use>
+                        </svg></span>
+                    <span class="reveal-toggle">Less <svg class="symbol" viewBox="-7 -7 14 14" width="14" height="14">
+                            <use href="img/obj.svg#reveal-down" transform="scale(1,-1)"></use>
+                        </svg></span>
+                    <div id="file-menu-advanced" class="toggleable">
+                        <div style="height: 10px;"></div>
+                        Symmetry Mode:<br>
+                        <input id="sym-h" type="checkbox"><label for="sym-h"> Horizontal</label><br>
+                        <input id="sym-v" type="checkbox"><label for="sym-v"> Vertical</label><br>
+                        <input id="sym-p" type="checkbox"><label for="sym-p"> Pillar</label><br>
+                        <input id="sym-c" type="checkbox"><label for="sym-c"> Different Lines</label><br>
+                        <div style="height: 10px;"></div>
+                        Topology:<br>
+                        <input id="topo-plane" type="radio" name="topo"><label for="topo-plane"> Plane</label><br>
+                        <input id="topo-pillar" type="radio" name="topo"><label for="topo-pillar"> Pillar</label><br>
+                    </div>
+                </div>
+            </div>
+            <hr>
             <div id="tool-buttons">
                 <div id="hexagon" class="btn tool-btn"><svg viewBox="-10 -10 20 20">
                         <use href="img/obj.svg#hexagon" transform="scale(0.6)"></use>

@@ -34,4 +34,7 @@
         <path d="M-10.5 -14.5h21v29h-21zM-6 -6.5h12M-6 0.5h12M-6 7.5h12" stroke="white" stroke-width="1" stroke-linecap="round"></path>
         <path d="M-10.5 -14.5h6v14l-3 4l-3 -4z" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="black" transform="translate(10,5) rotate(30)"></path>
     </g>
+    <g id="reveal-down">
+        <path d="M-4 -5L0 -1L4 -5M-4 0L0 4L4 0" fill="none" stroke="black" stroke-width="2" stroke-linecap="round">
+    </g>
 </svg>

@@ -5,12 +5,16 @@ W.editor = (function() {
     let title;
     /** @type {HTMLElement} */
     let toolsMenu;
-    /** @type {HTMLElement} */
+    /** @type {HTMLSVGElement} */
     let panel;
     /** @type {HTMLElement} */
     let toolButtons;
     /** @type {HTMLElement} */
     let colorButtons;
+    /** @type {HTMLInputElement} */
+    let inputPuzzleWidth;
+    /** @type {HTMLInputElement} */
+    let inputPuzzleHeight;
 
     let puzzle;
     let currentTool, currentSelectionMode;
@@ -220,6 +224,22 @@ W.editor = (function() {
         panel.addEventListener('click', handleSelectorClick);
         toolButtons.addEventListener('click', handleToolButton);
         colorButtons.addEventListener('click', handleColorButton);
+
+        let reveal = document.querySelectorAll('.reveal-toggle');
+        reveal.forEach((elem) => {
+            elem.addEventListener('click', (e) => {
+                let content = elem.parentElement.querySelector('.toggleable');
+                let toggles = elem.parentElement.querySelectorAll('.reveal-toggle');
+                toggles.forEach((e) => {
+                    e.classList.toggle('visible');
+                });
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                } else {
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                }
+            });
+        });
     }
 
     function setTitle(newTitle) {
