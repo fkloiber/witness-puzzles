@@ -1,7 +1,7 @@
 window.base64 = (function() {
     'use strict';
 
-    const codes = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+    const codes = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-/';
 
     return {
         encodeUint8Array: function(array) {

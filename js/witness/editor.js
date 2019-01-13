@@ -248,16 +248,28 @@ W.editor = (function() {
     }
 
     return {
-        edit: function(p) {
-            puzzle = p;
+        init: function() {
+            let params = (new URL(document.location)).searchParams;
+            let b64    = params.get('p');
+            try {
+                puzzle = Puzzle.deserialize(b64);
+            } catch (e) {
+                puzzle = new Puzzle(4, 4);
+            }
 
-            title        = document.getElementById('title');
-            toolsMenu    = document.getElementById('tools-menu');
-            toolButtons  = document.getElementById('tool-buttons');
-            colorButtons = document.getElementById('color-buttons');
-            panel        = document.getElementById('puzzle');
+            title             = document.getElementById('title');
+            toolsMenu         = document.getElementById('tools-menu');
+            toolButtons       = document.getElementById('tool-buttons');
+            colorButtons      = document.getElementById('color-buttons');
+            panel             = document.getElementById('puzzle');
+            inputPuzzleWidth  = document.getElementById('puzzle-width');
+            inputPuzzleHeight = document.getElementById('puzzle-height');
+
             panel.classList.add('edit');
+            inputPuzzleWidth.value  = puzzle.cellWidth;
+            inputPuzzleHeight.value = puzzle.cellHeight;
 
+            W.renderer.draw(puzzle, panel);
             setTitle(puzzle.name);
 
             setupTitleEventHandlers();

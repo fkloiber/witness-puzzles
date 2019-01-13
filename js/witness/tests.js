@@ -20,19 +20,19 @@ W.tests = (function() {
     ];
 
     tests.push(Puzzle.deserialize(
-        'H4sIAAAAAAACA81UwWrDMAz9laGzD8kIrPi+ey9jh9GDFnuxqWOnjrq2Cfn32Wk2VkZYlr' +
+        'H4sIAAAAAAACA81UwWrDMAz9laGzD8kIrPi-ey9jh9GDFnuxqWOnjrq2Cfn32Wk2VkZYlr' +
         'QwMNhP6D3rIaEWDlqQAv7AQEldKOqfFksJHJ5sfIi79b5pjAQG9aksJfkT8BaU87pxltAA' +
-        'f0NTSwbv0pPOvwUqbQz6AXYMyFXOuCLwoTJoo6RAQuAvbccmHdhqKwJdySMWzgaBPCiGL+' +
+        'f0NTSwbv0pPOvwUqbQz6AXYMyFXOuCLwoTJoo6RAQuAvbccmHdhqKwJdySMWzgaBPCiGL-' +
         'DVYL6FH4n1bo9ejuSNJh2UJgm/FbFQe7KX6efPhpZZmV3ndYzMbN/Nil3eyFlK12nPf5jG' +
         'W43bYm/LxnFkNc2rZjp7ExY2oae105bquGThCDxhEPZvmkWpALMzTAaY3vd4NcBVj7IoJa' +
-        '24FErP1KAndPz+EQZSchl//owPhHh9MTbdB1HCuKaDBgAA'));
+        '24FErP1KAndPz-EQZSchl//owPhHh9MTbdB1HCuKaDBgAA'));
 
     tests.push(Puzzle.deserialize(
         'H4sIAAAAAAACA61TywrCMBD8lznvoR70kLt4E8GjeIhNaINpounWB6X/blpRFBRbKiwhy8' +
         '7OTpZJjbNRnEPMCLk2Wc4QU4KThYbA3KlFvK2MtTKAUF6LQnO4QtQ46cAmlRaCQ6UJhzuo' +
-        'yxoC+4O3PovQR4WgJEuITd3QgMDeOBVZSu440sgap8AH6TKN8fie04+VDPqF75wb/kX3tX' +
-        'lnZbofrGV89BI0WHWvHY1a5J9jS507eOWN47J1JC4QCSG6dZK0Yi/dh4hp0oK1U5+g8VSm' +
-        'fcISbz2TZ2GNZtvcAMb+aZpjAwAA'));
+        'yxoC-4O3PovQR4WgJEuITd3QgMDeOBVZSu440sgap8AH6TKN8fie04-VDPqF75wb/kX3tX' +
+        'lnZbofrGV89BI0WHWvHY1a5J9jS507eOWN47J1JC4QCSG6dZK0Yi/dh4hp0oK1U5-g8VSm' +
+        'fcISbz2TZ2GNZtvcAMb-aZpjAwAA'));
 
     return {
         run: function() {
