@@ -55,6 +55,10 @@ svg.puzzle.play .play-selector {
     display: initial;
 }
 
+svg.puzzle.dragging {
+    cursor: ew-resize;
+}
+
 .black {
     stroke: var(--color-black);
     fill: var(--color-black);

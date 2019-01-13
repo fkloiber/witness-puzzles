@@ -78,6 +78,7 @@ W.renderer = (function() {
         let ref = createInto(parent, 'use', _class);
         ref.setAttributeNS(null, 'href', '#' + id);
         ref.setAttributeNS(null, 'transform', transform);
+        return ref;
     }
 
     let clipPathCounter = 0;
@@ -316,8 +317,8 @@ W.renderer = (function() {
         createLocalReferenceInto(refWrapper, 'ref', id, `translate(${- deltaX},0)`);
         createLocalReferenceInto(refWrapper, 'ref', id, `translate(${deltaX},0)`);
 
-        let useWrapper = createGroupInto(svg, 'usewrapper');
-        createLocalReferenceInto(useWrapper, 'ref', wrapperId, `translate(0,0)`);
+        let useWrapper  = createGroupInto(svg, 'usewrapper');
+        let moveWrapper = createLocalReferenceInto(useWrapper, 'ref', wrapperId, `translate(0,0)`);
 
         // create a mask to blend the repeating .............................................
         let gradientId = createMaskGradient(defs, puzzle);
@@ -325,6 +326,47 @@ W.renderer = (function() {
 
         // apply mask
         useWrapper.setAttributeNS(null, 'mask', `url(#${maskId})`);
+
+        function preventEventAction(e) {
+            e.preventDefault();
+            return false;
+        }
+        svg.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        let oldClientX, oldTransformX = 0, currentTransformX = 0;
+        svg.addEventListener('pointerdown', function(e) {
+            if (e.pointerType === 'mouse' && e.buttons === 2) {
+                svg.setPointerCapture(e.pointerId);
+                oldClientX = e.clientX;
+            }
+            e.preventDefault();
+            return false;
+        });
+        function pointermoveHandler(e) {
+            currentTransformX = (oldTransformX + e.clientX - oldClientX) % deltaX;
+            if (currentTransformX < 0) {
+                currentTransformX += deltaX;
+            }
+            if (currentTransformX > deltaX / 2) {
+                currentTransformX -= deltaX;
+            }
+            moveWrapper.setAttributeNS(null, 'transform', `translate(${currentTransformX})`);
+        }
+        svg.addEventListener('gotpointercapture', function(e) {
+            svg.classList.add('dragging');
+            svg.addEventListener('pointermove', pointermoveHandler);
+            document.documentElement.addEventListener('contextmenu', preventEventAction);
+        });
+        svg.addEventListener('lostpointercapture', function(e) {
+            svg.classList.remove('dragging');
+            svg.removeEventListener('pointermove', pointermoveHandler);
+            window.setTimeout(function() {
+                document.documentElement.removeEventListener('contextmenu', preventEventAction);
+            }, 10);
+            oldTransformX = currentTransformX;
+        });
     }
 
     return {
