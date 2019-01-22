@@ -369,9 +369,63 @@ W.renderer = (function() {
         });
     }
 
+    function createElementFromString(str) {
+        let wrapper       = document.createElement('div');
+        wrapper.innerHTML = str;
+        return wrapper.firstElementChild;
+    }
+
+    function fetchReference(url, cache) {
+        let request = new XMLHttpRequest();
+
+        request.onreadystatechange = () => {
+            if (request.readyState === XMLHttpRequest.DONE) {
+                let doc    = request.responseText;
+                cache[url] = createElementFromString(doc);
+            }
+        };
+        request.open('GET', url, false);
+        request.send();
+        return cache[url];
+    }
+
+    function inlineUseElements(elem, cache = {}) {
+        if (elem.nodeName === 'use') {
+            let match = /(.*)#(.*)/.exec(elem.getAttributeNS(null, 'href'));
+            if (match[1] === '') {
+                return;
+            }
+            let reference = cache[match[1]] || fetchReference(match[1], cache);
+            let group     = createElement('g');
+            elem.parentElement.insertBefore(group, elem);
+            group.setAttributeNS(null, 'class', elem.getAttributeNS(null, 'class'));
+            group.setAttributeNS(null, 'transform', elem.getAttributeNS(null, 'transform'));
+            group.parentElement.removeChild(elem);
+            let object = reference.querySelector('#' + match[2]).cloneNode(true);
+            group.appendChild(object);
+        }
+        for (let i = 0; i < elem.children.length; ++i) {
+            inlineUseElements(elem.children[i], cache);
+        }
+    }
+
+    function applyStyleRecursive(/** @type {HTMLElement} */ elem) {
+        let style          = getComputedStyle(elem);
+        elem.style.cssText = style.cssText;
+        for (let i = 0; i < elem.children.length; ++i) {
+            applyStyleRecursive(elem.children[i]);
+        }
+    }
+
     return {
         draw: function(puzzle, target = 'puzzle' /*, options = {}*/) {
             let svg = getSvgElement(target);
+            if (!svg.parentElement.classList.contains('svg-wrapper')) {
+                let wrapper = document.createElement('div');
+                wrapper.classList.add('svg-wrapper');
+                svg.parentElement.insertBefore(wrapper, svg);
+                wrapper.appendChild(svg);
+            }
 
             data.put(svg, 'puzzle', puzzle);
 
@@ -435,6 +489,49 @@ W.renderer = (function() {
             drawObjectsInternal(puzzle, newLayer);
             layer.parentElement.insertBefore(newLayer, layer);
             layer.parentElement.removeChild(layer);
+        },
+        saveImage: function(target = 'puzzle', scale = 1) {
+            let svg = getSvgElement(target);
+            svg     = svg.cloneNode(true);
+            document.body.appendChild(svg);
+            inlineUseElements(svg);
+            applyStyleRecursive(svg);
+            document.body.removeChild(svg);
+            let img       = new Image();
+            let xml       = new XMLSerializer().serializeToString(svg);
+            let data      = 'data:image/svg+xml;base64,' + btoa(xml);
+            let canvas    = document.createElement('canvas');
+            canvas.width  = svg.getAttributeNS(null, 'width');
+            canvas.height = svg.getAttributeNS(null, 'height');
+            let ctx       = canvas.getContext('2d');
+
+            canvas.style.display = 'none';
+            document.body.appendChild(canvas);
+
+            document.body.appendChild(img);
+            img.onload = () => {
+                ctx.drawImage(img, 0, 0);
+                ctx.getImageData(0, 0, canvas.width, canvas.height);
+                let uri = canvas.toDataURL('image/png', 0.8);
+
+                let saveLink = document.createElement('a');
+
+                saveLink.download      = 'puzzle.png';
+                saveLink.style.display = 'none';
+                document.body.appendChild(saveLink);
+                saveLink.onclick = () => {
+
+                };
+                saveLink.href = uri;
+                saveLink.click();
+                document.body.removeChild(saveLink);
+                document.body.removeChild(img);
+                document.body.removeChild(canvas);
+            };
+            img.src = data;
+            /*saveSvgAsPng(svg, 'test.png', {
+                scale: scale,
+            });*/
         },
     };
 })();
