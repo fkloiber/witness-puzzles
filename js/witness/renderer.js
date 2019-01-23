@@ -510,8 +510,8 @@ W.renderer = (function() {
             let xml       = new XMLSerializer().serializeToString(svg);
             let data      = 'data:image/svg+xml;base64,' + btoa(xml);
             let canvas    = document.createElement('canvas');
-            canvas.width  = svg.getAttributeNS(null, 'width');
-            canvas.height = svg.getAttributeNS(null, 'height');
+            canvas.width  = Math.floor(scale * svg.getAttributeNS(null, 'width'));
+            canvas.height = Math.floor(scale * svg.getAttributeNS(null, 'height'));
             let ctx       = canvas.getContext('2d');
 
             canvas.style.display = 'none';
@@ -519,6 +519,7 @@ W.renderer = (function() {
 
             document.body.appendChild(img);
             img.onload = () => {
+                ctx.scale(scale, scale);
                 ctx.drawImage(img, 0, 0);
                 ctx.getImageData(0, 0, canvas.width, canvas.height);
                 let uri = canvas.toDataURL('image/png', 0.8);
@@ -528,9 +529,6 @@ W.renderer = (function() {
                 saveLink.download      = 'puzzle.png';
                 saveLink.style.display = 'none';
                 document.body.appendChild(saveLink);
-                saveLink.onclick = () => {
-
-                };
                 saveLink.href = uri;
                 saveLink.click();
                 document.body.removeChild(saveLink);
