@@ -15,13 +15,13 @@
         <polygon points="9 10.392,0 -5.196,-9 10.392"></polygon>
     </g>
     <g id="triangle-2">
-        <use href="#triangle-1" x="-10"></use>
-        <use href="#triangle-1" x="10"></use>
+        <use href="#triangle-1" transform="translate(-10,0)"></use>
+        <use href="#triangle-1" transform="translate(10,0)"></use>
     </g>
     <g id="triangle-3">
-        <use href="#triangle-1" x="-20"></use>
-        <use href="#triangle-1" x="0"></use>
-        <use href="#triangle-1" x="20"></use>
+        <use href="#triangle-1" transform="translate(-20,0)"></use>
+        <use href="#triangle-1" transform="translate(0,0)"></use>
+        <use href="#triangle-1" transform="translate(20,0)"></use>
     </g>
     <g id="button-play">
         <title>Play</title>

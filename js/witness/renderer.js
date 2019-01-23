@@ -389,23 +389,32 @@ W.renderer = (function() {
         return cache[url];
     }
 
-    function inlineUseElements(elem, cache = {}) {
+    function inlineUseElements(elem, cache = {}, reference = null) {
+        let passReference = reference != null;
         if (elem.nodeName === 'use') {
             let match = /(.*)#(.*)/.exec(elem.getAttributeNS(null, 'href'));
-            if (match[1] === '') {
+            if (match[1] === '' && reference == null) {
                 return;
             }
-            let reference = cache[match[1]] || fetchReference(match[1], cache);
-            let group     = createElement('g');
+            reference = reference || cache[match[1]] || fetchReference(match[1], cache);
+            let group = createElement('g');
             elem.parentElement.insertBefore(group, elem);
-            group.setAttributeNS(null, 'class', elem.getAttributeNS(null, 'class'));
-            group.setAttributeNS(null, 'transform', elem.getAttributeNS(null, 'transform'));
+            let _class = elem.getAttributeNS(null, 'class');
+            if (_class) {
+                group.setAttributeNS(null, 'class', _class);
+            }
+            let transform = elem.getAttributeNS(null, 'transform');
+            if (transform) {
+                group.setAttributeNS(null, 'transform', transform);
+            }
             group.parentElement.removeChild(elem);
             let object = reference.querySelector('#' + match[2]).cloneNode(true);
             group.appendChild(object);
+            elem          = group;
+            passReference = true;
         }
         for (let i = 0; i < elem.children.length; ++i) {
-            inlineUseElements(elem.children[i], cache);
+            inlineUseElements(elem.children[i], cache, passReference ? reference : null);
         }
     }
 
