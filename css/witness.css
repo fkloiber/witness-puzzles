@@ -9,6 +9,7 @@
     --color-blue: #00f;
     --color-purple: #70c;
 
+    --text-color: #000;
     --bg-color: #0a8;
     --line-color: #344;
 }
@@ -19,4 +20,5 @@ body {
     font-family: 'Merriweather', serif;
     font-variant: small-caps;
     font-weight: bolder;
+    color: var(--text-color);
 }
