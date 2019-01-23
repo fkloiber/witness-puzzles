@@ -8,12 +8,12 @@
     font-size: 80px;
 }
 
-#file-menu {
+#settings-menu {
     width: 100%;
     /*text-align: center;*/
 }
 
-#file-menu-advanced {
+#settings-menu-advanced {
     height: fit-content;
 }
 
@@ -81,6 +81,22 @@ svg.symbol {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s;
+}
+
+.panel {
+    margin: -5px 0;
+}
+
+.section {
+    padding: 5px 0;
+}
+
+a.reset {
+    display: none;
+}
+
+.section.changed a.reset {
+    display: inline;
 }
 
 svg.puzzle.edit .editor-selector {
