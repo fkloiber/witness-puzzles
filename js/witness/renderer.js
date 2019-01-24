@@ -298,34 +298,38 @@ W.renderer = (function() {
         // in the defs instead of having them naked in the svg
         let defs = svg.querySelector('defs');
 
-        let refWrapper = createGroupInto(defs, 'refwrapper');
-        let wrapperId  = getReferenceId();
-        refWrapper.id  = wrapperId;
+        let maskWrapper = createGroupInto(svg, 'maskWrapper');
+        let moveWrapper = createGroupInto(maskWrapper, 'moveWrapper');
 
-        let ref = createGroupInto(refWrapper, 'ref');
-        let id  = getReferenceId();
-        ref.id  = id;
-
-        ref.appendChild(svg.querySelector('.layer-lines'));
-        ref.appendChild(svg.querySelector('.layer-endpoints'));
-        ref.appendChild(svg.querySelector('.layer-objects'));
-        ref.appendChild(svg.querySelector('.layer-selectors'));
-
-        // repeat the reference in left and right tiles
+        let id     = getReferenceId();
         let deltaX = puzzle.cellWidth * C.Dim.CellWidth;
 
-        createLocalReferenceInto(refWrapper, 'ref', id, `translate(${- deltaX},0)`);
-        createLocalReferenceInto(refWrapper, 'ref', id, `translate(${deltaX},0)`);
+        createLocalReferenceInto(moveWrapper, 'ref', id, `translate(${- deltaX},0)`);
+        let original = createGroupInto(moveWrapper, 'origGraphics');
+        original.appendChild(svg.querySelector('.layer-lines'));
+        original.appendChild(svg.querySelector('.layer-endpoints'));
+        original.appendChild(svg.querySelector('.layer-objects'));
 
-        let useWrapper  = createGroupInto(svg, 'usewrapper');
-        let moveWrapper = createLocalReferenceInto(useWrapper, 'ref', wrapperId, `translate(0,0)`);
+        original.id = id;
+
+        // repeat the reference in left and right tiles
+        createLocalReferenceInto(moveWrapper, 'ref', id, `translate(${deltaX},0)`);
+
+        let selectors      = svg.querySelector('.layer-selectors');
+        let selectorsLeft  = selectors.cloneNode(true);
+        let selectorsRight = selectors.cloneNode(true);
+        selectorsLeft.setAttributeNS(null, 'transform', `translate(${- deltaX},0)`);
+        selectorsRight.setAttributeNS(null, 'transform', `translate(${deltaX},0)`);
+        moveWrapper.appendChild(svg.querySelector('.layer-selectors'));
+        moveWrapper.appendChild(selectorsLeft);
+        moveWrapper.appendChild(selectorsRight);
 
         // create a mask to blend the repeating pillar tiles onto the static background
         let gradientId = createMaskGradient(defs, puzzle);
         let maskId     = createMask(defs, gradientId, puzzle);
 
         // apply mask
-        useWrapper.setAttributeNS(null, 'mask', `url(#${maskId})`);
+        maskWrapper.setAttributeNS(null, 'mask', `url(#${maskId})`);
 
         function preventEventAction(e) {
             e.preventDefault();
@@ -536,9 +540,6 @@ W.renderer = (function() {
                 document.body.removeChild(canvas);
             };
             img.src = data;
-            /*saveSvgAsPng(svg, 'test.png', {
-                scale: scale,
-            });*/
         },
     };
 })();

@@ -127,7 +127,7 @@ a.reset {
     display: inline;
 }
 
-svg.puzzle.edit .editor-selector {
+svg.puzzle.edit:not(.dragging) .editor-selector {
     opacity: 0;
     fill: #ff0;
     display: initial;
