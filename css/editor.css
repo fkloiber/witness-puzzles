@@ -52,6 +52,11 @@
     margin-bottom: 0;
 }
 
+.button.disabled {
+    /*border-color: var(--disabled-border-color);*/
+    color: var(--disabled-text-color);
+}
+
 .btn {
     display: inline-block;
     width: 50px;
