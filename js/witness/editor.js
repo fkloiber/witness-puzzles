@@ -243,6 +243,18 @@ W.editor = (function() {
 
         inputPuzzleWidth.value  = puzzle.cellWidth;
         inputPuzzleHeight.value = puzzle.cellHeight;
+
+        inputSymmetryH.checked  = puzzle.symmetry.horizontal;
+        inputSymmetryV.checked  = puzzle.symmetry.vertical;
+        inputSymmetryP.checked  = puzzle.symmetry.pillar;
+        inputSymmetryDL.checked = puzzle.symmetry.differentLines;
+
+        if (puzzle.topology === C.Topology.Pillar) {
+            inputTopoPillar.checked = true;
+        } else {
+            inputTopoPlane.checked = true;
+        }
+
         W.renderer.draw(puzzle, panel);
         setTitle(puzzle.name);
 
