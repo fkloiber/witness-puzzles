@@ -5,16 +5,29 @@ W.editor = (function() {
     let title;
     /** @type {HTMLElement} */
     let toolsMenu;
-    /** @type {HTMLSVGElement} */
+    /** @type {SVGSVGElement} */
     let panel;
     /** @type {HTMLElement} */
     let toolButtons;
     /** @type {HTMLElement} */
     let colorButtons;
+
     /** @type {HTMLInputElement} */
     let inputPuzzleWidth;
     /** @type {HTMLInputElement} */
     let inputPuzzleHeight;
+    /** @type {HTMLInputElement} */
+    let inputSymmetryH;
+    /** @type {HTMLInputElement} */
+    let inputSymmetryV;
+    /** @type {HTMLInputElement} */
+    let inputSymmetryP;
+    /** @type {HTMLInputElement} */
+    let inputSymmetryDL;
+    /** @type {HTMLInputElement} */
+    let inputTopoPlane;
+    /** @type {HTMLInputElement} */
+    let inputTopoPillar;
 
     let puzzle;
     let currentTool, currentSelectionMode;
@@ -220,6 +233,50 @@ W.editor = (function() {
         });
     }
 
+    function setTitle(newTitle) {
+        title.innerText = newTitle;
+        document.title  = newTitle;
+    }
+
+    function openPuzzle(p) {
+        puzzle = p;
+
+        inputPuzzleWidth.value  = puzzle.cellWidth;
+        inputPuzzleHeight.value = puzzle.cellHeight;
+        W.renderer.draw(puzzle, panel);
+        setTitle(puzzle.name);
+
+        handleToolButton({
+            target: toolButtons.querySelector('.btn'),
+        });
+        handleColorButton({
+            target: colorButtons.querySelector('.btn'),
+        });
+    }
+
+    function getSettings() {
+        let symmetry = {
+            horizontal: inputSymmetryH.checked,
+            vertical: inputSymmetryV.checked,
+            pillar: inputSymmetryP.checked,
+            differentLines: inputSymmetryDL.checked,
+        };
+        let op = {
+            width: parseInt(inputPuzzleWidth.value, 10),
+            height: parseInt(inputPuzzleHeight.value, 10),
+            symmetry: symmetry,
+            topology: inputTopoPillar.checked ? C.Topology.Pillar : C.Topology.Plane,
+        };
+        return op;
+    }
+
+    function handleNewButton() {
+        let options = getSettings();
+
+        let p = new Puzzle(options.width, options.height, C.NewPuzzleName, options);
+        openPuzzle(p);
+    }
+
     function setupClickHandlers() {
         panel.addEventListener('click', handleSelectorClick);
         toolButtons.addEventListener('click', handleToolButton);
@@ -227,7 +284,7 @@ W.editor = (function() {
 
         let reveal = document.querySelectorAll('.reveal-toggle');
         reveal.forEach((elem) => {
-            elem.addEventListener('click', (e) => {
+            elem.addEventListener('click', () => {
                 let content = elem.parentElement.querySelector('.toggleable');
                 let toggles = elem.parentElement.querySelectorAll('.reveal-toggle');
                 toggles.forEach((e) => {
@@ -240,23 +297,12 @@ W.editor = (function() {
                 }
             });
         });
-    }
 
-    function setTitle(newTitle) {
-        title.innerText = newTitle;
-        document.title  = newTitle;
+        document.getElementById('button-new').addEventListener('click', handleNewButton);
     }
 
     return {
         init: function() {
-            let params = (new URL(document.location)).searchParams;
-            let b64    = params.get('p');
-            try {
-                puzzle = Puzzle.deserialize(b64);
-            } catch (e) {
-                puzzle = new Puzzle(4, 4);
-            }
-
             title             = document.getElementById('title');
             toolsMenu         = document.getElementById('tools-menu');
             toolButtons       = document.getElementById('tool-buttons');
@@ -264,22 +310,28 @@ W.editor = (function() {
             panel             = document.getElementById('puzzle');
             inputPuzzleWidth  = document.getElementById('puzzle-width');
             inputPuzzleHeight = document.getElementById('puzzle-height');
+            inputSymmetryH    = document.getElementById('sym-h');
+            inputSymmetryV    = document.getElementById('sym-v');
+            inputSymmetryP    = document.getElementById('sym-p');
+            inputSymmetryDL   = document.getElementById('sym-c');
+            inputTopoPlane    = document.getElementById('topo-plane');
+            inputTopoPillar   = document.getElementById('topo-pillar');
 
             panel.classList.add('edit');
-            inputPuzzleWidth.value  = puzzle.cellWidth;
-            inputPuzzleHeight.value = puzzle.cellHeight;
-
-            W.renderer.draw(puzzle, panel);
-            setTitle(puzzle.name);
 
             setupTitleEventHandlers();
             setupClickHandlers();
-            handleToolButton({
-                target: toolButtons.querySelector('.btn'),
-            });
-            handleColorButton({
-                target: colorButtons.querySelector('.btn'),
-            });
+
+            let params = (new URL(document.location)).searchParams;
+            let b64    = params.get('p');
+            let p;
+            try {
+                p = Puzzle.deserialize(b64);
+            } catch (e) {
+                p = new Puzzle(4, 4);
+            }
+
+            openPuzzle(p);
         },
     };
 })();

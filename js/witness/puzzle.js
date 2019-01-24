@@ -5,6 +5,7 @@ window.Puzzle = (function() {
         horizontal: false,
         vertical: false,
         pillar: false,
+        differentLines: false,
     };
 
     let Puzzle = class Puzzle {
@@ -30,19 +31,182 @@ window.Puzzle = (function() {
             for (let i = 0; i < this.width * this.height; ++i) {
                 this.data[i] = {};
             }
-            this.startPoints = [
-                {
-                    x: 0,
-                    y: this.height - 1,
-                },
-            ];
-            this.endPoints = [
-                {
-                    x: this.width - 1,
-                    y: 0,
-                    dir: 'NE',
-                },
-            ];
+            if (this.topology === C.Topology.Pillar) {
+                if (!this.symmetry.pillar && !this.symmetry.vertical) {
+                    this.startPoints = [
+                        {
+                            x: 0,
+                            y: this.height - 1,
+                        },
+                    ];
+                    this.endPoints = [
+                        {
+                            x: 0,
+                            y: 0,
+                            dir: 'N',
+                        },
+                    ];
+                } else if (!this.symmetry.pillar && this.symmetry.vertical) {
+                    this.startPoints = [
+                        {
+                            x: 0,
+                            y: 0,
+                        },
+                        {
+                            x: 0,
+                            y: this.height - 1,
+                        },
+                    ];
+                    this.endPoints = [
+                        {
+                            x: this.width / 2,
+                            y: 0,
+                            dir: 'N',
+                        },
+                        {
+                            x: this.width / 2,
+                            y: this.height - 1,
+                            dir: 'S',
+                        },
+                    ];
+                } else if (this.symmetry.pillar) {
+                    if (this.cellWidth % 2 === 1) {
+                        throw 'A pillar puzzle with pillar symmetry and an odd width can never be solvable';
+                    }
+                    if (!this.symmetry.vertical) {
+                        this.startPoints = [
+                            {
+                                x: 0,
+                                y: this.height - 1,
+                            },
+                            {
+                                x: this.width / 2,
+                                y: this.height - 1,
+                            },
+                        ];
+                        this.endPoints = [
+                            {
+                                x: 0,
+                                y: 0,
+                                dir: 'N',
+                            },
+                            {
+                                x: this.width / 2,
+                                y: 0,
+                                dir: 'N',
+                            },
+                        ];
+                    } else {
+                        this.startPoints = [
+                            {
+                                x: 0,
+                                y: 0,
+                            },
+                            {
+                                x: 0,
+                                y: this.height - 1,
+                            },
+                        ];
+                        this.endPoints = [
+                            {
+                                x: this.width / 2,
+                                y: 0,
+                                dir: 'N',
+                            },
+                            {
+                                x: this.width / 2,
+                                y: this.height - 1,
+                                dir: 'S',
+                            },
+                        ];
+                    }
+                }
+            } else {
+                if (!this.symmetry.horizontal && !this.symmetry.vertical) {
+                    this.startPoints = [
+                        {
+                            x: 0,
+                            y: this.height - 1,
+                        },
+                    ];
+                    this.endPoints = [
+                        {
+                            x: this.width - 1,
+                            y: 0,
+                            dir: 'NE',
+                        },
+                    ];
+                } else if (this.symmetry.horizontal && !this.symmetry.vertical) {
+                    this.startPoints = [
+                        {
+                            x: 0,
+                            y: this.height - 1,
+                        },
+                        {
+                            x: this.width - 1,
+                            y: this.height - 1,
+                        },
+                    ];
+                    this.endPoints = [
+                        {
+                            x: 0,
+                            y: 0,
+                            dir: 'N',
+                        },
+                        {
+                            x: this.width - 1,
+                            y: 0,
+                            dir: 'N',
+                        },
+                    ];
+                } else if (!this.symmetry.horizontal && this.symmetry.vertical) {
+                    this.startPoints = [
+                        {
+                            x: 0,
+                            y: 0,
+                        },
+                        {
+                            x: 0,
+                            y: this.height - 1,
+                        },
+                    ];
+                    this.endPoints = [
+                        {
+                            x: this.width - 1,
+                            y: 0,
+                            dir: 'E',
+                        },
+                        {
+                            x: this.width - 1,
+                            y: this.height - 1,
+                            dir: 'E',
+                        },
+                    ];
+                } else {
+                    this.startPoints = [
+                        {
+                            x: 0,
+                            y: this.height - 1,
+                        },
+                        {
+                            x: this.width - 1,
+                            y: 0,
+                        },
+                    ];
+                    this.endPoints = [
+                        {
+                            x: 0,
+                            y: 0,
+                            dir: 'NW',
+                        },
+                        {
+                            x: this.width - 1,
+                            y: this.height - 1,
+                            dir: 'SE',
+                        },
+                    ];
+                }
+            }
         }
 
         toJSON() {
