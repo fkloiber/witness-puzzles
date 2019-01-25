@@ -169,36 +169,30 @@ W.renderer = (function() {
         drawLines(layer, puzzle, defs, puzzle.cellWidth, puzzle.lineHeight, C.Dim.CellWidth, 0);
     }
 
-    function drawStartpointSelectors(puzzle, layer) {
+    function drawEndpointsInternal(puzzle, layer, selectorLayer) {
         let selectors = layer.querySelectorAll(C.Class.PlaySelector);
         for (let i = 0; i < selectors.length; ++i) {
-            layer.removeChild(selectors[i]);
+            selectorLayer.removeChild(selectors[i]);
         }
-        let sp = puzzle.startPoints;
-        for (let i = 0; i < sp.length; ++i) {
-            let xPos = C.Dim.FieldBorder + C.Dim.FieldPadding + C.Dim.CellWidth * sp[i].x / 2;
-            let yPos = C.Dim.FieldBorder + C.Dim.FieldPadding + C.Dim.CellWidth * sp[i].y / 2;
-            createCircleInto(layer, C.Class.PlaySelector, xPos, yPos, C.Dim.StartPointRadius);
-        }
-    }
-
-    function drawEndpointsInternal(puzzle, layer, selectorLayer) {
-        let sp = puzzle.startPoints;
-        for (let i = 0; i < sp.length; ++i) {
-            let xPos   = C.Dim.FieldBorder + C.Dim.FieldPadding + C.Dim.CellWidth * sp[i].x / 2;
-            let yPos   = C.Dim.FieldBorder + C.Dim.FieldPadding + C.Dim.CellWidth * sp[i].y / 2;
-            let circle = createCircleInto(layer, 'startpoint', xPos, yPos, C.Dim.StartPointRadius);
-            circle.classList.add(`startpoint-${sp[i].x}-${sp[i].y}`);
-        }
-        drawStartpointSelectors(puzzle, selectorLayer);
-        let ep = puzzle.endPoints;
-        for (let i = 0; i < ep.length; ++i) {
-            let xPos = C.Dim.FieldBorder + C.Dim.FieldPadding + C.Dim.CellWidth * ep[i].x / 2;
-            let yPos = C.Dim.FieldBorder + C.Dim.FieldPadding + C.Dim.CellWidth * ep[i].y / 2;
-            let line = createLineInto(layer, 'endpoint', 0, 0, C.Dim.EndLineLength, 0);
-            line.classList.add(`endpoint-${ep[i].x}-${ep[i].y}`);
-            let angle = C.Direction[ep[i].dir];
-            line.setAttributeNS(null, 'transform', `translate(${xPos},${yPos}) rotate(${angle})`);
+        for (let y = 0; y < puzzle.height; ++y) {
+            for (let x = 0; x < puzzle.width; ++x) {
+                let e = puzzle.getGrid(x, y);
+                if (e.startPoint || e.endPoint) {
+                    let xPos = C.Dim.FieldBorder + C.Dim.FieldPadding + C.Dim.CellWidth * x / 2;
+                    let yPos = C.Dim.FieldBorder + C.Dim.FieldPadding + C.Dim.CellWidth * y / 2;
+                    if (e.startPoint) {
+                        let circle = createCircleInto(layer, 'startpoint', xPos, yPos, C.Dim.StartPointRadius);
+                        circle.classList.add(`startpoint-${x}-${y}`);
+                        createCircleInto(selectorLayer, C.Class.PlaySelector, xPos, yPos, C.Dim.StartPointRadius);
+                    }
+                    if (e.endPoint) {
+                        let line = createLineInto(layer, 'endpoint', 0, 0, C.Dim.EndLineLength, 0);
+                        line.classList.add(`endpoint-${x}-${y}`);
+                        let angle = C.Direction[e.endPoint];
+                        line.setAttributeNS(null, 'transform', `translate(${xPos},${yPos}) rotate(${angle})`);
+                    }
+                }
+            }
         }
     }
 

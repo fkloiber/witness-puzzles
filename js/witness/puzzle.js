@@ -33,178 +33,48 @@ window.Puzzle = (function() {
             }
             if (this.topology === C.Topology.Pillar) {
                 if (!this.symmetry.pillar && !this.symmetry.vertical) {
-                    this.startPoints = [
-                        {
-                            x: 0,
-                            y: this.height - 1,
-                        },
-                    ];
-                    this.endPoints = [
-                        {
-                            x: 0,
-                            y: 0,
-                            dir: 'N',
-                        },
-                    ];
+                    this.getGrid(0, this.height - 1).startPoint = true;
+                    this.getGrid(0, 0).endPoint                 = 'N';
                 } else if (!this.symmetry.pillar && this.symmetry.vertical) {
-                    this.startPoints = [
-                        {
-                            x: 0,
-                            y: 0,
-                        },
-                        {
-                            x: 0,
-                            y: this.height - 1,
-                        },
-                    ];
-                    this.endPoints = [
-                        {
-                            x: this.width / 2,
-                            y: 0,
-                            dir: 'N',
-                        },
-                        {
-                            x: this.width / 2,
-                            y: this.height - 1,
-                            dir: 'S',
-                        },
-                    ];
+                    this.getGrid(0, 0).startPoint                          = true;
+                    this.getGrid(0, this.height - 1).startPoint            = true;
+                    this.getGrid(this.width / 2, 0).endPoint               = 'N';
+                    this.getGrid(this.width / 2, this.height - 1).endPoint = 'S';
                 } else if (this.symmetry.pillar) {
-                    if (this.cellWidth % 2 === 1) {
+                    if (this.cellWidth % 2) {
                         throw 'A pillar puzzle with pillar symmetry and an odd width can never be solvable';
                     }
                     if (!this.symmetry.vertical) {
-                        this.startPoints = [
-                            {
-                                x: 0,
-                                y: this.height - 1,
-                            },
-                            {
-                                x: this.width / 2,
-                                y: this.height - 1,
-                            },
-                        ];
-                        this.endPoints = [
-                            {
-                                x: 0,
-                                y: 0,
-                                dir: 'N',
-                            },
-                            {
-                                x: this.width / 2,
-                                y: 0,
-                                dir: 'N',
-                            },
-                        ];
+                        this.getGrid(0, this.height - 1).startPoint              = true;
+                        this.getGrid(this.width / 2, this.height - 1).startPoint = true;
+                        this.getGrid(0, 0).endPoint                              = 'N';
+                        this.getGrid(this.width / 2, 0).endPoint                 = 'N';
                     } else {
-                        this.startPoints = [
-                            {
-                                x: 0,
-                                y: 0,
-                            },
-                            {
-                                x: 0,
-                                y: this.height - 1,
-                            },
-                        ];
-                        this.endPoints = [
-                            {
-                                x: this.width / 2,
-                                y: 0,
-                                dir: 'N',
-                            },
-                            {
-                                x: this.width / 2,
-                                y: this.height - 1,
-                                dir: 'S',
-                            },
-                        ];
+                        this.getGrid(0, 0).startPoint                          = true;
+                        this.getGrid(0, this.height - 1).startPoint            = true;
+                        this.getGrid(this.width / 2, 0).endPoint               = 'N';
+                        this.getGrid(this.width / 2, this.height - 1).endPoint = 'S';
                     }
                 }
             } else {
                 if (!this.symmetry.horizontal && !this.symmetry.vertical) {
-                    this.startPoints = [
-                        {
-                            x: 0,
-                            y: this.height - 1,
-                        },
-                    ];
-                    this.endPoints = [
-                        {
-                            x: this.width - 1,
-                            y: 0,
-                            dir: 'NE',
-                        },
-                    ];
+                    this.getGrid(0, this.height - 1).startPoint = true;
+                    this.getGrid(this.width - 1, 0).endPoint    = 'NE';
                 } else if (this.symmetry.horizontal && !this.symmetry.vertical) {
-                    this.startPoints = [
-                        {
-                            x: 0,
-                            y: this.height - 1,
-                        },
-                        {
-                            x: this.width - 1,
-                            y: this.height - 1,
-                        },
-                    ];
-                    this.endPoints = [
-                        {
-                            x: 0,
-                            y: 0,
-                            dir: 'N',
-                        },
-                        {
-                            x: this.width - 1,
-                            y: 0,
-                            dir: 'N',
-                        },
-                    ];
+                    this.getGrid(0, this.height - 1).startPoint              = true;
+                    this.getGrid(this.width - 1, this.height - 1).startPoint = true;
+                    this.getGrid(0, 0).endPoint                              = 'N';
+                    this.getGrid(this.width - 1, 0).endPoint                 = 'N';
                 } else if (!this.symmetry.horizontal && this.symmetry.vertical) {
-                    this.startPoints = [
-                        {
-                            x: 0,
-                            y: 0,
-                        },
-                        {
-                            x: 0,
-                            y: this.height - 1,
-                        },
-                    ];
-                    this.endPoints = [
-                        {
-                            x: this.width - 1,
-                            y: 0,
-                            dir: 'E',
-                        },
-                        {
-                            x: this.width - 1,
-                            y: this.height - 1,
-                            dir: 'E',
-                        },
-                    ];
+                    this.getGrid(0, 0).startPoint                          = true;
+                    this.getGrid(0, this.height - 1).startPoint            = true;
+                    this.getGrid(this.width - 1, 0).endPoint               = 'E';
+                    this.getGrid(this.width - 1, this.height - 1).endPoint = 'E';
                 } else {
-                    this.startPoints = [
-                        {
-                            x: 0,
-                            y: this.height - 1,
-                        },
-                        {
-                            x: this.width - 1,
-                            y: 0,
-                        },
-                    ];
-                    this.endPoints = [
-                        {
-                            x: 0,
-                            y: 0,
-                            dir: 'NW',
-                        },
-                        {
-                            x: this.width - 1,
-                            y: this.height - 1,
-                            dir: 'SE',
-                        },
-                    ];
+                    this.getGrid(0, this.height - 1).startPoint            = true;
+                    this.getGrid(this.width - 1, 0).startPoint             = true;
+                    this.getGrid(0, 0).endPoint                            = 'NW';
+                    this.getGrid(this.width - 1, this.height - 1).endPoint = 'SE';
                 }
             }
         }
