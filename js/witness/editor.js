@@ -136,6 +136,10 @@ W.editor = (function() {
         });
     }
 
+    function handleStartPoint(x, y) {}
+
+    function handleEndPoint(x, y) {}
+
     function handleSelectorClick(/** @type {MouseEvent} */ e) {
         if (!e.target.classList.contains(C.Class.EditorSelector)) {
             return;
@@ -149,7 +153,11 @@ W.editor = (function() {
         let y = parseInt(selector.getAttributeNS(null, C.Attr.GridY), 10);
 
         if (currentTool === C.Tool.StartPoint || currentTool === C.Tool.EndPoint) {
-            handleEndPoints(x, y);
+            if (currentTool === C.Tool.StartPoint) {
+                handleStartPoint(x, y);
+            } else {
+                handleEndPoint(x, y);
+            }
             return;
         }
 
@@ -159,7 +167,7 @@ W.editor = (function() {
         switch (currentTool) {
             case C.Tool.Gap: {
                 if (object.kind === C.ObjKind.Gap) {
-                    object = {};
+                    object.kind = undefined;
                 } else {
                     object.kind = C.ObjKind.Gap;
                 }
@@ -168,7 +176,9 @@ W.editor = (function() {
             case C.Tool.Triangle: {
                 if (object.kind === C.ObjKind.Triangle && object.color === currentColor) {
                     if (object.count === C.TrianglesMaxCount) {
-                        object = {};
+                        object.kind  = undefined;
+                        object.color = undefined;
+                        object.count = undefined;
                     } else {
                         object.count += 1;
                     }
@@ -176,11 +186,9 @@ W.editor = (function() {
                     if (object.kind === C.ObjKind.Triangle) {
                         object.color = currentColor;
                     } else {
-                        object = {
-                            kind: currentTool,
-                            color: currentColor,
-                            count: 1,
-                        };
+                        object.kind  = currentTool;
+                        object.color = currentColor;
+                        object.count = 1;
                     }
                 }
                 break;
@@ -190,12 +198,11 @@ W.editor = (function() {
             case C.Tool.Star:
             case C.Tool.Elimination: {
                 if (object.kind === currentTool && object.color === currentColor) {
-                    object = {};
+                    object.kind  = undefined;
+                    object.color = undefined;
                 } else {
-                    object = {
-                        kind: currentTool,
-                        color: currentColor,
-                    };
+                    object.kind  = currentTool;
+                    object.color = currentColor;
                 }
                 break;
             }

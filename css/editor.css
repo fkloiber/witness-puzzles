@@ -55,6 +55,7 @@
 .button.disabled {
     /*border-color: var(--disabled-border-color);*/
     color: var(--disabled-text-color);
+    pointer-events: none;
 }
 
 .btn {
