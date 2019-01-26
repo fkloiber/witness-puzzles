@@ -4,7 +4,7 @@
     "eqeqeq": true,
     "latedef": true,
     "maxcomplexity": false,
-    "maxdepth": 4,
+    "maxdepth": 6,
     "strict": true,
     "trailingcomma": true,
     "unused": true,

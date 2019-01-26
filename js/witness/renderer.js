@@ -8,9 +8,16 @@ W.renderer = (function() {
         return idOrElement;
     }
 
-    function clearElement(element) {
-        while (element.firstChild) {
-            element.removeChild(element.firstChild);
+    function clearElement(element, selector) {
+        if (selector) {
+            let elems = element.querySelectorAll(selector);
+            for (let i = 0; i < elems.length; ++i) {
+                elems[i].parentElement.removeChild(elems[i]);
+            }
+        } else {
+            while (element.firstChild) {
+                element.removeChild(element.firstChild);
+            }
         }
     }
 
@@ -81,40 +88,6 @@ W.renderer = (function() {
         return ref;
     }
 
-    let clipPathCounter = 0;
-    function createLineGapClipPath(defs, x, y, isVertical) {
-        let clipPath = createInto(defs, 'clipPath');
-        let id       = 'clip-path-' + clipPathCounter++;
-        clipPath.setAttributeNS(null, 'id', id);
-        let width  = C.Dim.LineWidth + 2;
-        let length = (C.Dim.CellWidth * (1 - C.Dim.LineGapPercent) + C.Dim.LineWidth) / 2 + 1;
-        let x1     = x - C.Dim.LineWidth / 2 - 1;
-        let y1     = y - C.Dim.LineWidth / 2 - 1;
-        let w      = isVertical ? width : length;
-        let h      = isVertical ? length : width;
-        let x2     = isVertical ? x1 : x1 + C.Dim.CellWidth * (1 - C.Dim.LineGapPercent) + 2;
-        let y2     = isVertical ? y1 + C.Dim.CellWidth * (1 - C.Dim.LineGapPercent) + 2 : y1;
-        createRectInto(clipPath, null, x1, y1, w, h);
-        createRectInto(clipPath, null, x2, y2, w, h);
-        return id;
-    }
-
-    function drawLines(container, puzzle, defs, width, height, xDelta, yDelta) {
-        for (let y = 0; y < height; ++y) {
-            let yPos = C.Dim.FieldBorder + C.Dim.FieldPadding + y * C.Dim.CellWidth;
-            for (let x = 0; x < width; ++x) {
-                let xPos       = C.Dim.FieldBorder + C.Dim.FieldPadding + x * C.Dim.CellWidth;
-                let line       = createLineInto(container, 'line', xPos, yPos, xPos + xDelta, yPos + yDelta);
-                let isVertical = xDelta === 0;
-                let data       = isVertical ? puzzle.getLineV(x, y) : puzzle.getLineH(x, y);
-                if (data.kind === C.ObjKind.Gap) {
-                    let clipPath = createLineGapClipPath(defs, xPos, yPos, isVertical);
-                    line.setAttributeNS(null, 'clip-path', 'url(#' + clipPath + ')');
-                }
-            }
-        }
-    }
-
     function drawObject(container, object, x, y) {
         let xPos = C.Dim.FieldBorder + C.Dim.FieldPadding + C.Dim.CellWidth * x / 2;
         let yPos = C.Dim.FieldBorder + C.Dim.FieldPadding + C.Dim.CellWidth * y / 2;
@@ -164,9 +137,65 @@ W.renderer = (function() {
         createRectInto(layer, 'background', 0, C.Dim.FieldBorder, puzzleWidth, puzzleHeight - 2 * C.Dim.FieldBorder);
     }
 
+    let clipPathCounter = 0;
     function drawLinesInternal(puzzle, layer, defs /*, options = {}*/) {
-        drawLines(layer, puzzle, defs, puzzle.lineWidth, puzzle.cellHeight, 0, C.Dim.CellWidth);
-        drawLines(layer, puzzle, defs, puzzle.cellWidth, puzzle.lineHeight, C.Dim.CellWidth, 0);
+        for (let y = 0; y < puzzle.height; ++y) {
+            let yPos = C.Dim.FieldBorder + C.Dim.FieldPadding + C.Dim.CellWidth * y / 2;
+            for (let x = 0; x < puzzle.width; ++x) {
+                let xPos = C.Dim.FieldBorder + C.Dim.FieldPadding + C.Dim.CellWidth * x / 2;
+                let elem = puzzle.getGrid(x, y);
+                if (elem.node) {
+                    let adjLines = 0;
+                    for (let dy = -1; dy < 2; ++dy) {
+                        for (let dx = -1; dx < 2; ++dx) {
+                            adjLines += (puzzle.getGrid(x + dx, y + dy).line ? 1 : 0);
+                        }
+                    }
+                    if (adjLines > 1) {
+                        createCircleInto(layer, 'node', xPos, yPos, C.Dim.LineWidth / 2);
+                    } else if (adjLines === 1) {
+                        createRectInto(
+                            layer, 'node', xPos - C.Dim.LineWidth / 2, yPos - C.Dim.LineWidth / 2, C.Dim.LineWidth,
+                            C.Dim.LineWidth);
+                    }
+                }
+                if (elem.line) {
+                    let x1, x2, y1, y2, addClass;
+                    if (elem.line === 'h') {
+                        x2 = C.Dim.CellWidth / 2;
+                        x1 = -x2;
+                        y1 = y2  = 0;
+                        addClass = 'line-h';
+                    } else if (elem.line === 'v') {
+                        y2 = C.Dim.CellWidth / 2;
+                        y1 = -y2;
+                        x1 = x2  = 0;
+                        addClass = 'line-v';
+                    }
+                    let line = createLineInto(layer, 'line', xPos + x1, yPos + y1, xPos + x2, yPos + y2);
+                    line.classList.add(addClass);
+
+                    if (elem.kind === 'gap') {
+                        let clipPath = createInto(defs, 'clipPath');
+                        let id       = `clip-path-${clipPathCounter++}`;
+                        clipPath.id  = id;
+                        clipPath.classList.add('gap-clip-path');
+                        let width      = C.Dim.LineWidth + 2;
+                        let length     = (C.Dim.CellWidth * (1 - C.Dim.LineGapPercent) + C.Dim.LineWidth) / 2 + 1;
+                        let x3         = xPos + x1 - C.Dim.LineWidth / 2 - 1;
+                        let y3         = yPos + y1 - C.Dim.LineWidth / 2 - 1;
+                        let isVertical = elem.line === 'v';
+                        let w          = isVertical ? width : length;
+                        let h          = isVertical ? length : width;
+                        let x4         = isVertical ? x3 : x3 + C.Dim.CellWidth * (1 - C.Dim.LineGapPercent) + 2;
+                        let y4         = isVertical ? y3 + C.Dim.CellWidth * (1 - C.Dim.LineGapPercent) + 2 : y3;
+                        createRectInto(clipPath, null, x3, y3, w, h);
+                        createRectInto(clipPath, null, x4, y4, w, h);
+                        line.setAttributeNS(null, 'clip-path', `url(#${id})`);
+                    }
+                }
+            }
+        }
     }
 
     function drawEndpointsInternal(puzzle, layer, selectorLayer) {
@@ -479,7 +508,7 @@ W.renderer = (function() {
             let layer = svg.getElementsByClassName('layer-lines')[0];
             let defs  = svg.getElementsByTagName('defs')[0];
             clearElement(layer);
-            clearElement(defs);
+            clearElement(defs, '.gap-clip-path');
             drawLinesInternal(puzzle, layer, defs);
         },
         redrawEndpoints: function(puzzle, target = 'puzzle' /*, options = {}*/) {

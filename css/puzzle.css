@@ -21,7 +21,8 @@ svg.puzzle .background {
     fill: var(--bg-color);
 }
 
-svg.puzzle .startpoint {
+svg.puzzle .startpoint,
+svg.puzzle .node {
     fill: var(--line-color);
 }
 
@@ -29,6 +30,10 @@ svg.puzzle .line,
 svg.puzzle .endpoint {
     stroke: var(--line-color);
     stroke-width: 24px;
+    stroke-linecap: butt;
+}
+
+svg.puzzle .endpoint {
     stroke-linecap: round;
 }
 

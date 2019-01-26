@@ -28,8 +28,23 @@ window.Puzzle = (function() {
             }
 
             this.data = [];
-            for (let i = 0; i < this.width * this.height; ++i) {
-                this.data[i] = {};
+            for (let y = 0; y < this.height; ++y) {
+                for (let x = 0; x < this.width; ++x) {
+                    let i = y * this.width + x;
+
+                    this.data[i] = {};
+                    if (x % 2) {
+                        if (y % 2) {
+                            this.data[i].cell = true;
+                        } else {
+                            this.data[i].line = 'h';
+                        }
+                    } else if (y % 2) {
+                        this.data[i].line = 'v';
+                    } else {
+                        this.data[i].node = true;
+                    }
+                }
             }
             if (this.topology === C.Topology.Pillar) {
                 if (!this.symmetry.pillar && !this.symmetry.vertical) {
@@ -132,6 +147,19 @@ window.Puzzle = (function() {
             this.data[idx] = obj;
         }
         getGrid(x, y) {
+            if (y < 0 || y >= this.height) {
+                return {};
+            } else if (x < 0 || x >= this.width) {
+                if (this.topology === C.Topology.Pillar) {
+                    if (x < 0) {
+                        x += this.width;
+                    } else {
+                        x -= this.width;
+                    }
+                } else {
+                    return {};
+                }
+            }
             let idx = y * this.width + x;
             return this.data[idx];
         }
