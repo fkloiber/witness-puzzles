@@ -140,12 +140,6 @@ window.Puzzle = (function() {
             return Puzzle.fromJSON(data);
         }
 
-        get(idx) {
-            return this.data[idx];
-        }
-        set(idx, obj) {
-            this.data[idx] = obj;
-        }
         getGrid(x, y) {
             if (y < 0 || y >= this.height) {
                 return {};
@@ -165,38 +159,6 @@ window.Puzzle = (function() {
         }
         setGrid(x, y, obj) {
             let idx        = y * this.width + x;
-            this.data[idx] = obj;
-        }
-        getCell(x, y) {
-            let idx = (y * 2 + 1) * this.width + x * 2 + 1;
-            return this.data[idx];
-        }
-        setCell(x, y, obj) {
-            let idx        = (y * 2 + 1) * this.width + x * 2 + 1;
-            this.data[idx] = obj;
-        }
-        getLineV(x, y) {
-            let idx = (y * 2 + 1) * this.width + x * 2;
-            return this.data[idx];
-        }
-        setLineV(x, y, obj) {
-            let idx        = (y * 2 + 1) * this.width + x * 2;
-            this.data[idx] = obj;
-        }
-        getLineH(x, y) {
-            let idx = y * 2 * this.width + x * 2 + 1;
-            return this.data[idx];
-        }
-        setLineH(x, y, obj) {
-            let idx        = y * 2 * this.width + x * 2 + 1;
-            this.data[idx] = obj;
-        }
-        getNode(x, y) {
-            let idx = y * 2 * this.width + x * 2;
-            return this.data[idx];
-        }
-        setNode(x, y, obj) {
-            let idx        = y * 2 * this.width + x * 2;
             this.data[idx] = obj;
         }
     };
