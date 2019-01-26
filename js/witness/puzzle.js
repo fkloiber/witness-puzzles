@@ -161,6 +161,28 @@ window.Puzzle = (function() {
             let idx        = y * this.width + x;
             this.data[idx] = obj;
         }
+
+        getSymmetricPoint(x, y) {
+            let result = {
+                x: x,
+                y: y,
+            };
+
+            if (this.symmetry.vertical) {
+                result.y = this.height - y - 1;
+            }
+            if (this.symmetry.horizontal) {
+                result.x = this.width - x - 1;
+            }
+            if (this.symmetry.pillar) {
+                result.x += this.width / 2;
+                if (result.x >= this.width) {
+                    result.x -= this.width;
+                }
+            }
+
+            return result;
+        }
     };
     return Puzzle;
 })();

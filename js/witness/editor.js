@@ -136,7 +136,46 @@ W.editor = (function() {
         });
     }
 
-    function handleStartPoint(x, y) {}
+    function canToggleStartPoint(x, y, isSymmetric) {
+        let result = !((x % 2) && (y % 2));
+
+        if (isSymmetric) {
+            let sp = puzzle.getSymmetricPoint(x, y);
+            result = result && !(x === sp.x && y === sp.y);
+        }
+
+        return result;
+    }
+
+    function doToggleStartPoint(x, y, isSymmetric) {
+        let e  = puzzle.getGrid(x, y);
+        let sp = puzzle.getSymmetricPoint(x, y);
+        let e2 = puzzle.getGrid(sp.x, sp.y);
+        if (e.startPoint) {
+            e.startPoint = undefined;
+            if (isSymmetric) {
+                e2.startPoint = undefined;
+            }
+        } else {
+            e.startPoint = true;
+            if (isSymmetric) {
+                e2.startPoint = true;
+            }
+        }
+    }
+
+    function handleStartPoint(x, y) {
+        let isSymmetric = puzzle.symmetry.horizontal || puzzle.symmetry.vertical || puzzle.symmetry.pillar;
+        let success     = true;
+        if (isSymmetric) {
+            let sp  = puzzle.getSymmetricPoint(x, y);
+            success = success && canToggleStartPoint(sp.x, sp.y, true);
+        }
+        success = success && canToggleStartPoint(x, y, isSymmetric);
+        if (success) {
+            doToggleStartPoint(x, y, isSymmetric);
+        }
+    }
 
     function handleEndPoint(x, y) {}
 
@@ -158,7 +197,6 @@ W.editor = (function() {
             } else {
                 handleEndPoint(x, y);
             }
-            return;
         }
 
         let object = puzzle.getGrid(x, y);
