@@ -177,7 +177,126 @@ W.editor = (function() {
         }
     }
 
-    function handleEndPoint(x, y) {}
+    function canToggleEndPoint(x, y, isSymmetric) {
+        let result = !((x % 2) && (y % 2));
+
+        if (isSymmetric) {
+            let sp = puzzle.getSymmetricPoint(x, y);
+            result = result && !(x === sp.x && y === sp.y);
+        }
+
+        return result;
+    }
+
+    function getNextDirection(dir) {
+        switch (dir) {
+            case undefined:
+                return 'N';
+            case 'N':
+                return 'NE';
+            case 'NE':
+                return 'E';
+            case 'E':
+                return 'SE';
+            case 'SE':
+                return 'S';
+            case 'S':
+                return 'SW';
+            case 'SW':
+                return 'W';
+            case 'W':
+                return 'NW';
+            case 'NW':
+            default:
+                return undefined;
+        }
+    }
+
+    function canDirectionFit(x, y, dir) {
+        if (dir === undefined) {
+            return true;
+        }
+        let e = puzzle.getGrid(x, y);
+        if (e.line) {
+            if (e.line === 'h') {
+                return dir === 'N' || dir === 'S';
+            } else if (e.line === 'v') {
+                return dir === 'E' || dir === 'W';
+            }
+        } else if (e.node) {
+            let gridPositionsToCheck = [];
+            if (['NW', 'N', 'NE'].includes(dir)) {
+                gridPositionsToCheck.push([x, y - 1]);
+            }
+            if (['N', 'NE', 'E'].includes(dir)) {
+                gridPositionsToCheck.push([x + 1, y - 1]);
+            }
+            if (['NE', 'E', 'SE'].includes(dir)) {
+                gridPositionsToCheck.push([x + 1, y]);
+            }
+            if (['E', 'SE', 'S'].includes(dir)) {
+                gridPositionsToCheck.push([x + 1, y + 1]);
+            }
+            if (['SE', 'S', 'SW'].includes(dir)) {
+                gridPositionsToCheck.push([x, y + 1]);
+            }
+            if (['S', 'SW', 'W'].includes(dir)) {
+                gridPositionsToCheck.push([x - 1, y + 1]);
+            }
+            if (['SW', 'W', 'NW'].includes(dir)) {
+                gridPositionsToCheck.push([x - 1, y]);
+            }
+            if (['W', 'NW', 'N'].includes(dir)) {
+                gridPositionsToCheck.push([x - 1, y - 1]);
+            }
+            for (let pos of gridPositionsToCheck) {
+                let el = puzzle.getGrid(pos[0], pos[1]);
+                if (el.line) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    function getNextWorkingDirection(x, y, dir) {
+        do {
+            dir = getNextDirection(dir);
+        } while (!canDirectionFit(x, y, dir));
+        return dir;
+    }
+
+    function doToggleEndPoint(x, y, isSymmetric) {
+        let e  = puzzle.getGrid(x, y);
+        let sp = puzzle.getSymmetricPoint(x, y);
+        let e2 = puzzle.getGrid(sp.x, sp.y);
+
+        while (true) {
+            let candidateDirection = getNextWorkingDirection(x, y, e.endPoint);
+            if (isSymmetric) {
+                let symmetricDirection = puzzle.getSymmetricDirection(candidateDirection);
+                if (!canDirectionFit(sp.x, sp.y, symmetricDirection)) {
+                    continue;
+                }
+                e2.endPoint = symmetricDirection;
+            }
+            e.endPoint = candidateDirection;
+            break;
+        }
+    }
+
+    function handleEndPoint(x, y) {
+        let isSymmetric = puzzle.symmetry.horizontal || puzzle.symmetry.vertical || puzzle.symmetry.pillar;
+        let success     = true;
+        if (isSymmetric) {
+            let sp  = puzzle.getSymmetricPoint(x, y);
+            success = success && canToggleEndPoint(sp.x, sp.y, true);
+        }
+        success = success && canToggleEndPoint(x, y, isSymmetric);
+        if (success) {
+            doToggleEndPoint(x, y, isSymmetric);
+        }
+    }
 
     function handleSelectorClick(/** @type {MouseEvent} */ e) {
         if (!e.target.classList.contains(C.Class.EditorSelector)) {
@@ -390,5 +509,8 @@ W.editor = (function() {
 
             openPuzzle(p);
         },
+        getPuzzle: function() {
+            return puzzle;
+        }
     };
 })();

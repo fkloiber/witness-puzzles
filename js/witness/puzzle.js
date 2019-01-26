@@ -183,6 +183,19 @@ window.Puzzle = (function() {
 
             return result;
         }
+
+        getSymmetricDirection(dir) {
+            if (dir === undefined) {
+                return undefined;
+            }
+            if (this.symmetry.vertical) {
+                dir = dir.replace(/[NS]/, (d) => {return d === 'N' ? 'S' : 'N'});
+            }
+            if (this.symmetry.horizontal) {
+                dir = dir.replace(/[WE]/, (d) => {return d === 'W' ? 'E' : 'W'});
+            }
+            return dir;
+        }
     };
     return Puzzle;
 })();

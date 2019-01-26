@@ -1,11 +1,11 @@
 # Todo
 
 ## Big Features
-* Tracing
-* Validation
-* Solving
-* Local Storage
-* Server Storage at some point?
+* [ ] Tracing
+* [ ] Validation
+* [ ] Solving
+* [ ] Local Storage
+* [ ] Server Storage at some point?
 
 ## Smaller Stuff
 * [x] Rework grid:
@@ -14,7 +14,7 @@
 * [ ] Make constants not an object but separate `const`s so they actually spellcheck
 * [ ] Merge horizontal and pillar symmetries
 * [ ] Add tools to editor
-    * [ ] start/end points
+    * [x] start/end points
     * [ ] lines
     * [x] gaps
     * [ ] polynominos
