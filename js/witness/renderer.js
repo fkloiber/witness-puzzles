@@ -210,9 +210,11 @@ W.renderer = (function() {
                     let xPos = C.Dim.FieldBorder + C.Dim.FieldPadding + C.Dim.CellWidth * x / 2;
                     let yPos = C.Dim.FieldBorder + C.Dim.FieldPadding + C.Dim.CellWidth * y / 2;
                     if (e.startPoint) {
-                        let circle = createCircleInto(layer, 'startpoint', xPos, yPos, C.Dim.StartPointRadius);
-                        circle.classList.add(`startpoint-${x}-${y}`);
-                        createCircleInto(selectorLayer, C.Class.PlaySelector, xPos, yPos, C.Dim.StartPointRadius);
+                        createCircleInto(layer, 'startpoint', xPos, yPos, C.Dim.StartPointRadius);
+                        let selector =
+                            createCircleInto(selectorLayer, C.Class.PlaySelector, xPos, yPos, C.Dim.StartPointRadius);
+                        selector.setAttribute('grid-x', x);
+                        selector.setAttribute('grid-y', y);
                     }
                     if (e.endPoint) {
                         let line = createLineInto(layer, 'endpoint', 0, 0, C.Dim.EndLineLength, 0);
@@ -516,6 +518,7 @@ W.renderer = (function() {
             let layer     = svg.getElementsByClassName('layer-endpoints')[0];
             let selectors = svg.getElementsByClassName('layer-selectors')[0];
             clearElement(layer);
+            clearElement(selectors, '.play-selector');
             drawEndpointsInternal(puzzle, layer, selectors);
         },
         redrawObjects: function(puzzle, target = 'puzzle' /*, options = {}*/) {

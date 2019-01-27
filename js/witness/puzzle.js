@@ -189,10 +189,14 @@ window.Puzzle = (function() {
                 return undefined;
             }
             if (this.symmetry.vertical) {
-                dir = dir.replace(/[NS]/, (d) => {return d === 'N' ? 'S' : 'N'});
+                dir = dir.replace(/[NS]/, (d) => {
+                    return d === 'N' ? 'S' : 'N';
+                });
             }
             if (this.symmetry.horizontal) {
-                dir = dir.replace(/[WE]/, (d) => {return d === 'W' ? 'E' : 'W'});
+                dir = dir.replace(/[WE]/, (d) => {
+                    return d === 'W' ? 'E' : 'W';
+                });
             }
             return dir;
         }

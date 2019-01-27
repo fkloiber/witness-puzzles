@@ -6,12 +6,12 @@
     "maxcomplexity": false,
     "maxdepth": 6,
     "strict": true,
-    "trailingcomma": true,
+    "trailingcomma": false,
     "unused": true,
     "varstmt": true,
     "eqnull": true,
     "browser": true,
     "devel": true,
-    "jquery": true,
+    "jquery": false,
     "typed": true
 }

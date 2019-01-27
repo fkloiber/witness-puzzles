@@ -206,8 +206,8 @@ W.editor = (function() {
                 return 'W';
             case 'W':
                 return 'NW';
-            case 'NW':
             default:
+            case 'NW':
                 return undefined;
         }
     }
@@ -475,6 +475,9 @@ W.editor = (function() {
         });
 
         document.getElementById('button-new').addEventListener('click', handleNewButton);
+        document.getElementById('button-play').addEventListener('click', () => {
+            W.tracer.prepareTracing();
+        });
     }
 
     return {
