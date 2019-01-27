@@ -391,15 +391,62 @@ W.editor = (function() {
         }
     }
 
-    function setupTitleEventHandlers() {
-        title.addEventListener('input', function(e) {
-            L.log(e);
-        });
-    }
-
     function setTitle(newTitle) {
         title.innerText = newTitle;
         document.title  = newTitle;
+    }
+
+    const maxTitleLength = 30;
+    function canInsertIntoTitle(chunk) {
+        let titleText = title.innerText;
+        let selection = getSelection();
+        if (selection.isCollapsed) {
+            return titleText.length + chunk.length <= maxTitleLength;
+        }
+        let range = selection.getRangeAt(0);
+        if (!title.contains(range.commonAncestorContainer)) {
+            return false;
+        }
+        return titleText.length - (range.endOffset - range.startOffset) + chunk.length <= maxTitleLength;
+    }
+
+    function setupTitleEventHandlers() {
+        let permittedCharacters = 'a-zA-Z0-9_\\-.';
+        let rejectFilter        = new RegExp(`[^${permittedCharacters}]`, 'g');
+
+        title.addEventListener('keypress', function(e) {
+            if (e.key.length !== 1 || rejectFilter.test(e.key)) {
+                e.stopPropagation();
+                e.preventDefault();
+            }
+            rejectFilter.lastIndex = 0;
+
+            if (!canInsertIntoTitle(e.key)) {
+                e.stopPropagation();
+                e.preventDefault();
+            }
+        });
+        title.addEventListener('paste', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+
+            let clipboardData      = e.clipboardData || window.clipboardData;
+            let text               = clipboardData.getData('Text').replace(rejectFilter, '');
+            rejectFilter.lastIndex = 0;
+
+            if (canInsertIntoTitle(text)) {
+                let range = getSelection().getRangeAt(0);
+                range.deleteContents();
+                range.insertNode(document.createTextNode(text));
+                range.collapse();
+            }
+        });
+        title.addEventListener('blur', () => {
+            setTitle(title.innerText);
+        });
+        title.addEventListener('dragstart', (e) => {
+            e.preventDefault();
+        });
     }
 
     function openPuzzle(p) {
