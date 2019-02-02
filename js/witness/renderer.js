@@ -505,30 +505,6 @@ W.renderer = (function() {
             L.timeEnd('info', 'rendering');
             L.groupEnd();
         },
-        redrawLines: function(puzzle, target = 'puzzle' /*, options = {}*/) {
-            let svg   = getSvgElement(target);
-            let layer = svg.getElementsByClassName('layer-lines')[0];
-            let defs  = svg.getElementsByTagName('defs')[0];
-            clearElement(layer);
-            clearElement(defs, '.gap-clip-path');
-            drawLinesInternal(puzzle, layer, defs);
-        },
-        redrawEndpoints: function(puzzle, target = 'puzzle' /*, options = {}*/) {
-            let svg       = getSvgElement(target);
-            let layer     = svg.getElementsByClassName('layer-endpoints')[0];
-            let selectors = svg.getElementsByClassName('layer-selectors')[0];
-            clearElement(layer);
-            clearElement(selectors, '.play-selector');
-            drawEndpointsInternal(puzzle, layer, selectors);
-        },
-        redrawObjects: function(puzzle, target = 'puzzle' /*, options = {}*/) {
-            let svg      = getSvgElement(target);
-            let layer    = svg.getElementsByClassName('layer-objects')[0];
-            let newLayer = createElement('g', 'layer-objects');
-            drawObjectsInternal(puzzle, newLayer);
-            layer.parentElement.insertBefore(newLayer, layer);
-            layer.parentElement.removeChild(layer);
-        },
         saveImage: function(target = 'puzzle', scale = 1) {
             let svg = getSvgElement(target);
             svg     = svg.cloneNode(true);

@@ -370,25 +370,7 @@ W.editor = (function() {
         L.log(`Setting (${x},${y}) to ${currentTool}; old: ${obj_bu}; new: ${JSON.stringify(object)}`);
         puzzle.setGrid(x, y, object);
 
-        switch (currentTool) {
-            case C.Tool.Gap: {
-                W.renderer.redrawLines(puzzle, panel);
-                break;
-            }
-            case C.Tool.Triangle:
-            case C.Tool.Hexagon:
-            case C.Tool.Square:
-            case C.Tool.Star:
-            case C.Tool.Elimination: {
-                W.renderer.redrawObjects(puzzle, panel);
-                break;
-            }
-            case C.Tool.StartPoint:
-            case C.Tool.EndPoint: {
-                W.renderer.redrawEndpoints(puzzle, panel);
-                break;
-            }
-        }
+        W.renderer.draw(puzzle, panel);
     }
 
     function setTitle(newTitle) {
@@ -418,6 +400,10 @@ W.editor = (function() {
             if (e.key.length !== 1 || rejectFilter.test(e.key)) {
                 e.stopPropagation();
                 e.preventDefault();
+                if (e.key === 'Enter') {
+                    title.blur();
+                }
+                return;
             }
             rejectFilter.lastIndex = 0;
 
