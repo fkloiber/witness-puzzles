@@ -95,6 +95,10 @@ label.disabled {
     cursor: pointer;
 }
 
+hr {
+    margin: 12px 0;
+}
+
 svg.symbol {
     display: inline;
     stroke: var(--text-color);
@@ -144,4 +148,16 @@ svg.puzzle.edit.select-cell .editor-selector.select-cell:hover {
 
 svg.puzzle.edit .button {
     display: none;
+}
+
+.poly-brick,
+.poly-brick.selected:hover {
+    stroke: var(--bg-color);
+    stroke-width: 2px;
+    fill: var(--brick-color);
+}
+
+.poly-brick:hover,
+.poly-brick.selected {
+    fill: var(--brick-selected-color);
 }

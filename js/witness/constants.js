@@ -22,6 +22,7 @@ window.C = (function() {
             Star: 'star',
             Elimination: 'elimination',
             Triangle: 'triangle',
+            Polyomino: 'polyomino',
         },
         SelMode: {
             Node: 'select-node',

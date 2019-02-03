@@ -505,6 +505,57 @@ W.renderer = (function() {
             L.timeEnd('info', 'rendering');
             L.groupEnd();
         },
+        drawPolyominoEditor(puzzle, target = 'polyomino-svg') {
+            let svg     = getSvgElement(target);
+            let cwidth  = puzzle.cellWidth;
+            let cheight = puzzle.cellHeight;
+            clearElement(svg);
+
+            svg.style.width = '100%';
+
+            let style      = getComputedStyle(svg);
+            let panelWidth = parseInt(style.width, 10), panelHeight;
+
+            let borderWidth  = 7;
+            let brickSpacing = 3;
+            let brickWidth;
+            let brickWithSpacing;
+
+            {
+                let maxWidth  = (panelWidth - 2 * borderWidth) / cwidth;
+                let maxHeight = maxWidth * cheight + 2 * borderWidth;
+                if (maxHeight > 2 * panelWidth) {
+                    brickWithSpacing = (2 * panelWidth - 2 * borderWidth) / cheight;
+                } else {
+                    brickWithSpacing = maxWidth;
+                }
+            }
+
+            brickWidth = brickWithSpacing - brickSpacing;
+
+            panelWidth  = brickWithSpacing * cwidth + 2 * borderWidth;
+            panelHeight = brickWithSpacing * cheight + 2 * borderWidth;
+
+            svg.style.width  = panelWidth + 'px';
+            svg.style.height = panelHeight + 'px';
+
+            let bg = createRectInto(svg, null, 0, 0, panelWidth, panelHeight);
+            bg.setAttributeNS(null, 'rx', '4px');
+            bg.setAttributeNS(null, 'ry', '4px');
+            bg.style.stroke = 'none';
+            bg.style.fill   = 'var(--bg-color)';
+
+
+            for (let y = 0; y < cheight; ++y) {
+                let yPos = borderWidth + y * brickWithSpacing + brickSpacing / 2;
+                for (let x = 0; x < cwidth; ++x) {
+                    let xPos  = borderWidth + x * brickWithSpacing + brickSpacing / 2;
+                    let brick = createRectInto(svg, 'poly-brick', xPos, yPos, brickWidth, brickWidth);
+                    brick.setAttribute('data-x', x);
+                    brick.setAttribute('data-y', y);
+                }
+            }
+        },
         saveImage: function(target = 'puzzle', scale = 1) {
             let svg = getSvgElement(target);
             svg     = svg.cloneNode(true);
@@ -545,3 +596,5 @@ W.renderer = (function() {
         },
     };
 })();
+// border + cw * (spacing + width) + border
+// 2*border + cw*spacing + cw*width

@@ -37,70 +37,88 @@
     <div id="editor">
         <div id="title" contenteditable="true"></div>
         <div id="tools-menu">
-            <div id="settings-menu">
-                <div class="panel">
-                    <div id="section-buttons" class="section">
-                        <div id="button-new" class="button">New Puzzle</div>
-                        <div id="button-apply" class="button disabled">Apply Settings</div>
-                        <div id="button-play" class="button">Play</div>
-                    </div>
-                    <div id="section-size" class="section">
-                        <div class="section-header">Size: <a class="reset" href="#">*</a></div>
-                        <input id="puzzle-width" class="dim-input" type="number" min="1" max="10"></input> x <input id="puzzle-height"
-                            class="dim-input" type="number" min="1" max="10"></input>
-                    </div>
-                    <div class="section">
-                        <span class="reveal-toggle visible">More <svg class="symbol" viewBox="-7 -7 14 14" width="14"
-                                height="14">
-                                <use href="img/obj.svg#reveal-down"></use>
-                            </svg></span>
-                        <span class="reveal-toggle">Less <svg class="symbol" viewBox="-7 -7 14 14" width="14" height="14">
-                                <use href="img/obj.svg#reveal-down" transform="scale(1,-1)"></use>
-                            </svg></span>
-                        <div id="settings-menu-advanced" class="toggleable panel">
-                            <div id="section-symmetry" class="section">
-                                <div class="section-header">Symmetry Mode: <a class="reset" href="#">*</a></div>
-                                <input id="sym-h" type="checkbox"><label for="sym-h"> Horizontal</label><br>
-                                <input id="sym-v" type="checkbox"><label for="sym-v"> Vertical</label><br>
-                                <input id="sym-p" type="checkbox"><label for="sym-p"> Pillar</label><br>
-                                <input id="sym-c" type="checkbox"><label for="sym-c"> Different Lines</label><br>
-                            </div>
-                            <div id="section-topology" class="section">
-                                <div class="section-header">Topology: <a class="reset" href="#">*</a></div>
-                                <input id="topo-plane" type="radio" name="topo"><label for="topo-plane"> Plane</label><br>
-                                <input id="topo-pillar" type="radio" name="topo"><label for="topo-pillar"> Pillar</label><br>
-                            </div>
+            <div id="settings-menu" class="panel">
+                <div id="section-buttons" class="section">
+                    <div id="button-new" class="button">New Puzzle</div>
+                    <div id="button-apply" class="button disabled">Apply Settings</div>
+                    <div id="button-play" class="button">Play</div>
+                </div>
+                <div id="section-size" class="section">
+                    <div class="section-header">Size: <a class="reset" href="#">*</a></div>
+                    <input id="puzzle-width" class="dim-input" type="number" min="1" max="10"></input> x <input id="puzzle-height"
+                        class="dim-input" type="number" min="1" max="10"></input>
+                </div>
+                <div class="section">
+                    <span class="reveal-toggle visible">More <svg class="symbol" viewBox="-7 -7 14 14" width="14"
+                            height="14">
+                            <use href="img/obj.svg#reveal-down"></use>
+                        </svg></span>
+                    <span class="reveal-toggle">Less <svg class="symbol" viewBox="-7 -7 14 14" width="14" height="14">
+                            <use href="img/obj.svg#reveal-down" transform="scale(1,-1)"></use>
+                        </svg></span>
+                    <div id="settings-menu-advanced" class="toggleable panel">
+                        <div id="section-symmetry" class="section">
+                            <div class="section-header">Symmetry Mode: <a class="reset" href="#">*</a></div>
+                            <input id="sym-h" type="checkbox"><label for="sym-h"> Horizontal</label><br>
+                            <input id="sym-v" type="checkbox"><label for="sym-v"> Vertical</label><br>
+                            <input id="sym-p" type="checkbox"><label for="sym-p"> Pillar</label><br>
+                            <input id="sym-c" type="checkbox"><label for="sym-c"> Different Lines</label><br>
+                        </div>
+                        <div id="section-topology" class="section">
+                            <div class="section-header">Topology: <a class="reset" href="#">*</a></div>
+                            <input id="topo-plane" type="radio" name="topo"><label for="topo-plane"> Plane</label><br>
+                            <input id="topo-pillar" type="radio" name="topo"><label for="topo-pillar"> Pillar</label><br>
                         </div>
                     </div>
                 </div>
             </div>
             <hr>
-            <div id="tool-buttons">
-                <div id="startpoint" class="btn tool-btn" style="background-color: var(--bg-color);"><svg viewBox="-10 -10 20 20">
-                        <circle cx="0" cy="0" r="10" style="stroke: none; fill: var(--line-color);"></circle>
-                    </svg></div>
-                <div id="endpoint" class="btn tool-btn" style="background-color: var(--bg-color);"><svg viewBox="-10 -10 20 20">
-                        <line x1="-20" y1="0" x2="0" y2="0" style="stroke: var(--line-color); stroke-width: 10px; stroke-linecap: round;"></line>
-                    </svg></div>
-                <div id="gap" class="btn tool-btn" style="background-color: var(--bg-color);"><svg viewBox="-10 -10 20 20">
-                        <line x1="-20" y1="0" x2="-3" y2="0" style="stroke: var(--line-color); stroke-width: 10px;"></line>
-                        <line x1="3" y1="0" x2="20" y2="0" style="stroke: var(--line-color); stroke-width: 10px;"></line>
-                    </svg></div>
-                <div id="hexagon" class="btn tool-btn"><svg viewBox="-10 -10 20 20">
-                        <use href="img/obj.svg#hexagon" transform="scale(0.6)"></use>
-                    </svg></div>
-                <div id="square" class="btn tool-btn"><svg viewBox="-10 -10 20 20">
-                        <use href="img/obj.svg#square" transform="scale(0.48)"></use>
-                    </svg></div>
-                <div id="star" class="btn tool-btn"><svg viewBox="-10 -10 20 20">
-                        <use href="img/obj.svg#star" transform="scale(0.5)"></use>
-                    </svg></div>
-                <div id="elimination" class="btn tool-btn"><svg viewBox="-10 -10 20 20">
-                        <use href="img/obj.svg#elimination" transform="translate(0,1) scale(0.5)"></use>
-                    </svg></div>
-                <div id="triangle" class="btn tool-btn"><svg viewBox="-10 -10 20 20">
-                        <use href="img/obj.svg#triangle-1" transform="translate(0,-1) scale(0.5)"></use>
-                    </svg></div>
+            <div id="tool-buttons" class="panel">
+                <div id="section-tools" class="section">
+                    <div id="startpoint" class="btn tool-btn" style="background-color: var(--bg-color);"><svg viewBox="-10 -10 20 20">
+                            <circle cx="0" cy="0" r="10" style="stroke: none; fill: var(--line-color);"></circle>
+                        </svg></div>
+                    <div id="endpoint" class="btn tool-btn" style="background-color: var(--bg-color);"><svg viewBox="-10 -10 20 20">
+                            <line x1="-20" y1="0" x2="0" y2="0" style="stroke: var(--line-color); stroke-width: 10px; stroke-linecap: round;"></line>
+                        </svg></div>
+                    <div id="gap" class="btn tool-btn" style="background-color: var(--bg-color);"><svg viewBox="-10 -10 20 20">
+                            <line x1="-20" y1="0" x2="-3" y2="0" style="stroke: var(--line-color); stroke-width: 10px;"></line>
+                            <line x1="3" y1="0" x2="20" y2="0" style="stroke: var(--line-color); stroke-width: 10px;"></line>
+                        </svg></div>
+                    <div id="hexagon" class="btn tool-btn"><svg viewBox="-10 -10 20 20">
+                            <use href="img/obj.svg#hexagon" transform="scale(0.6)"></use>
+                        </svg></div>
+                    <div id="square" class="btn tool-btn"><svg viewBox="-10 -10 20 20">
+                            <use href="img/obj.svg#square" transform="scale(0.48)"></use>
+                        </svg></div>
+                    <div id="star" class="btn tool-btn"><svg viewBox="-10 -10 20 20">
+                            <use href="img/obj.svg#star" transform="scale(0.5)"></use>
+                        </svg></div>
+                    <div id="elimination" class="btn tool-btn"><svg viewBox="-10 -10 20 20">
+                            <use href="img/obj.svg#elimination" transform="translate(0,1) scale(0.5)"></use>
+                        </svg></div>
+                    <div id="triangle" class="btn tool-btn"><svg viewBox="-10 -10 20 20">
+                            <use href="img/obj.svg#triangle-1" transform="translate(0,-1) scale(0.5)"></use>
+                        </svg></div>
+                    <div id="polyomino" class="btn tool-btn"><svg viewBox="-10 -10 20 20">
+                            <defs>
+                                <g id="template">
+                                    <rect x="-8.5" y="-8.5" width="7" height="7"></rect>
+                                    <rect x="1.5" y="-8.5" width="7" height="7"></rect>
+                                    <rect x="-8.5" y="1.5" width="7" height="7"></rect>
+                                    <rect x="1.5" y="1.5" width="7" height="7"></rect>
+                                </g>
+                            </defs>
+                            <use href="#template" transform="scale(0.7)"></use>
+                        </svg></div>
+                </div>
+                <div id="polyomino-edit" class="section toggleable panel">
+                    <div id="section-polyomino" class="section">
+                        <svg id="polyomino-svg" style="display: block"></svg>
+                        <input id="poly-rot" type="checkbox"><label for="poly-rot"> Rotatable</label><br>
+                        <input id="poly-neg" type="checkbox"><label for="poly-neg"> Negated</label><br>
+                    </div>
+                </div>
             </div>
             <hr>
             <div id="color-buttons">

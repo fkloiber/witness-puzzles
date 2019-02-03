@@ -29,6 +29,13 @@ W.editor = (function() {
     /** @type {HTMLInputElement} */
     let inputTopoPillar;
 
+    /** @type {HTMLInputElement} */
+    let inputPolyRotate;
+    /** @type {HTMLInputElement} */
+    let inputPolyNegate;
+
+    let currentPolyomino;
+
     let puzzle;
     let currentTool, currentSelectionMode;
     let currentColor = 'black';
@@ -84,6 +91,14 @@ W.editor = (function() {
         return theColor;
     }
 
+    function revealPolyominoEditor(isVisible) {
+        let editor    = document.getElementById('polyomino-edit');
+        let maxHeight = isVisible ? editor.scrollHeight + 'px' : null;
+        let method    = isVisible ? 'add' : 'remove';
+        editor.classList[method]('visible');
+        editor.style.maxHeight = maxHeight;
+    }
+
     function handleToolButton(e) {
         if (!e.target.classList.contains('btn')) {
             return;
@@ -109,12 +124,76 @@ W.editor = (function() {
             case C.Tool.Star:
             case C.Tool.Elimination:
             case C.Tool.Triangle:
+            case C.Tool.Polyomino:
                 newSelectionMode = C.SelMode.Cell;
                 break;
             default:
                 throw `Invalid tool id ${currentTool}`;
         }
         changeSelectionMode(newSelectionMode);
+        revealPolyominoEditor(currentTool === C.Tool.Polyomino);
+    }
+
+    function drawPolyominoButtonFromSelected() {
+        let svg = document.getElementById('polyomino-svg');
+
+        let selBricks = svg.querySelectorAll('.selected');
+        let minX = Infinity, maxX = -Infinity;
+        let minY = Infinity, maxY = -Infinity;
+
+        for (let i = 0; i < selBricks.length; ++i) {
+            let x = parseInt(selBricks[i].getAttribute('data-x'), 10);
+            let y = parseInt(selBricks[i].getAttribute('data-y'), 10);
+            minX  = Math.min(minX, x);
+            minY  = Math.min(minY, y);
+            maxX  = Math.max(maxX, x);
+            maxY  = Math.max(maxY, y);
+        }
+
+        let width  = maxX - minX + 1;
+        let height = maxY - minY + 1;
+
+        let button = document.querySelector('#polyomino svg');
+
+        if (selBricks.length === 0) {
+            currentPolyomino = null;
+            while (button.firstChild) {
+                button.removeChild(button.firstChild);
+            }
+            return;
+        }
+
+        let pattern = '0'.repeat(width * height).split('');
+        for (let i = 0; i < selBricks.length; ++i) {
+            let x = parseInt(selBricks[i].getAttribute('data-x'), 10) - minX;
+            let y = parseInt(selBricks[i].getAttribute('data-y'), 10) - minY;
+
+            pattern[y * width + x] = '1';
+        }
+        let newPolyomino = {
+            rotatable: inputPolyRotate.checked,
+            negated: inputPolyNegate.checked,
+            pattern: `${width},${height},${pattern.join('')}`,
+        };
+
+        if (!currentPolyomino || newPolyomino.pattern !== currentPolyomino.pattern) {
+            while (button.firstChild) {
+                button.removeChild(button.firstChild);
+            }
+        } else if (currentPolyomino) {
+        }
+
+        currentPolyomino = newPolyomino;
+
+        console.log(newPolyomino);
+    }
+
+    function handlePolyominoClick(/** @type {MouseEvent} */ e) {
+        if (!e.target.classList.contains('poly-brick')) {
+            return;
+        }
+        e.target.classList.toggle('selected');
+        drawPolyominoButtonFromSelected();
     }
 
     function handleColorButton(/** @type {MouseEvent} */ e) {
@@ -365,6 +444,9 @@ W.editor = (function() {
             }
             case C.Tool.StartPoint:
             case C.Tool.EndPoint:
+                break;
+            default:
+                throw `Unhandled tool '${currentTool}'`;
         }
 
         L.log(`Setting (${x},${y}) to ${currentTool}; old: ${obj_bu}; new: ${JSON.stringify(object)}`);
@@ -453,6 +535,7 @@ W.editor = (function() {
         }
 
         W.renderer.draw(puzzle, panel);
+        W.renderer.drawPolyominoEditor(puzzle);
         setTitle(puzzle.name);
 
         handleToolButton({
@@ -511,6 +594,8 @@ W.editor = (function() {
         document.getElementById('button-play').addEventListener('click', () => {
             W.tracer.prepareTracing();
         });
+
+        document.getElementById('polyomino-svg').addEventListener('click', handlePolyominoClick);
     }
 
     return {
@@ -528,6 +613,9 @@ W.editor = (function() {
             inputSymmetryDL   = document.getElementById('sym-c');
             inputTopoPlane    = document.getElementById('topo-plane');
             inputTopoPillar   = document.getElementById('topo-pillar');
+            inputPolyRotate   = document.getElementById('poly-rot');
+            inputPolyNegate   = document.getElementById('poly-neg');
+
 
             panel.classList.add('edit');
 
